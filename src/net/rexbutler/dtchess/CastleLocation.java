@@ -23,7 +23,7 @@ public enum CastleLocation {
     private final Move castleKingMove;
     private final Move castleRookMove;
 
-    CastleLocation(PieceColor aColor, CastleSide aSide, Move aCastleKingMove, Move aCastleRookMove) {
+    private CastleLocation(PieceColor aColor, CastleSide aSide, Move aCastleKingMove, Move aCastleRookMove) {
         color = aColor;
         side = aSide;
         castleKingMove = aCastleKingMove;

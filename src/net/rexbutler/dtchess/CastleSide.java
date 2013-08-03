@@ -5,7 +5,7 @@ public enum CastleSide {
     QUEEN_SIDE("Queenside"),
     KING_SIDE("Kingside");
 
-    CastleSide(String aDescription) {
+    private CastleSide(String aDescription) {
         description = aDescription;
     }
 

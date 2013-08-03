@@ -9,7 +9,7 @@ public enum GameResult {
     private final String description;
     private final PieceColor colorWhoWins;
 
-    GameResult(String aDescription, PieceColor whoWins) {
+    private GameResult(String aDescription, PieceColor whoWins) {
         description = aDescription;
         colorWhoWins = whoWins;
     }

@@ -14,7 +14,7 @@ public class Game {
 
     public Game() {
     }
-
+    
     public boolean reset() {
         return true;
     }
