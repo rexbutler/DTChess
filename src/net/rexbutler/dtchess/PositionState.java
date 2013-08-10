@@ -54,15 +54,18 @@ public class PositionState {
         fullMoveCount = position.fullMoveCount;
     }
 
-
-    public Piece[][] getBoard() {
-        return board;
+    public Piece getPieceAt(Square square) {
+        int i = square.getX();
+        int j = square.getY();
+        assert (0 <= i && i < Chess.BOARD_SIZE && 0 <= j && j < Chess.BOARD_SIZE) : "Invalid board coordinates.";
+        return board[i][j];
     }
 
-    /**
-     * @param boardConfig
-     *            the boardConfig to set
-     */
+    public Piece getPieceAt(int i, int j) {
+        assert (0 <= i && i < Chess.BOARD_SIZE && 0 <= j && j < Chess.BOARD_SIZE) : "Invalid board coordinates.";
+        return board[i][j];
+    }
+    
     public void setBoard(Piece[][] boardConfig) {
         this.board = boardConfig.clone();
     }

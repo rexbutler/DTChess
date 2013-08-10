@@ -146,7 +146,7 @@ public class Position extends PositionState {
             for (int by = 0; by < Chess.BOARD_SIZE; by++) {
                 final Square square1 = new Square(bx, by);
 
-                if (!getBoard()[bx][by].equals(Piece.NONE)) {
+                if (!this.getPieceAt(new Square(bx,by)).equals(Piece.NONE)) {
                     moves.addAll(possibleMovesWhichStartAt(square1));
                 }
             }
@@ -156,7 +156,7 @@ public class Position extends PositionState {
 
     public HashSet<Move> possibleMovesWhichStartAt(Square square1) {
         final HashSet<Move> moves = new HashSet<>();
-        final PieceType pieceType = getBoard()[square1.getX()][square1.getY()].getType();
+        final PieceType pieceType = this.getPieceAt(square1).getType();
 
         for (final MoveVector moveVector : Chess.pieceVectors.get(pieceType)) {
             final Square square2 = square1.addVector(moveVector);
@@ -209,7 +209,7 @@ public class Position extends PositionState {
     public boolean isAttackedByColor(Square target, PieceColor color) {
         Position modPosition;
 
-        if (this.getBoard()[target.getX()][target.getY()].getColor().invert() != color) {
+        if (this.getPieceAt(target).getColor().invert() != color) {
             return false;
         }
 
@@ -234,13 +234,8 @@ public class Position extends PositionState {
     }
 
     public boolean isCapture(Move move) {
-        final int x1 = move.getEndSquare().getX();
-        final int y1 = move.getEndSquare().getY();
-        final int x2 = move.getStartSquare().getX();
-        final int y2 = move.getStartSquare().getY();
-
-        final PieceColor pieceColor1 = this.getBoard()[x1][y1].getColor();
-        final PieceColor pieceColor2 = this.getBoard()[x2][y2].getColor();
+        final PieceColor pieceColor1 = this.getPieceAt(move.getEndSquare()).getColor();
+        final PieceColor pieceColor2 = this.getPieceAt(move.getStartSquare()).getColor();
 
         if (pieceColor1 == PieceColor.NONE || pieceColor2 == PieceColor.NONE) {
             return false;
@@ -250,13 +245,8 @@ public class Position extends PositionState {
     }
 
     public boolean isCaptureOfOwnColor(Move move) {
-        final int x1 = move.getStartSquare().getX();
-        final int y1 = move.getStartSquare().getY();
-        final int x2 = move.getEndSquare().getX();
-        final int y2 = move.getEndSquare().getY();
-        
-        final PieceColor pieceColor1 = this.getBoard()[x1][y1].getColor();
-        final PieceColor pieceColor2 = this.getBoard()[x2][y2].getColor();
+        final PieceColor pieceColor1 = this.getPieceAt(move.getStartSquare()).getColor();
+        final PieceColor pieceColor2 = this.getPieceAt(move.getEndSquare()).getColor();
 
         if (pieceColor1 == PieceColor.NONE) {
             return false;
@@ -281,7 +271,7 @@ public class Position extends PositionState {
         squareloop:
         for(int j = 0; j < Chess.BOARD_SIZE; j++) {
             for(int i = 0; i < Chess.BOARD_SIZE; i++) {
-                Piece pieceHere = this.getBoard()[i][j];
+                Piece pieceHere = this.getPieceAt(new Square(i,j));
                 if(pieceHere.getType() == PieceType.KING 
                         && pieceHere.getColor() == colorToMove.invert()) {
                     kx = i;
@@ -317,26 +307,24 @@ public class Position extends PositionState {
             return false;
         }
 
-        final int kx = move.getStartSquare().getX();
-        final int ky = move.getStartSquare().getY();
-        final int rx = castleLocation.getRookMove().getStartSquare().getX();
-        final int ry = castleLocation.getRookMove().getStartSquare().getY();
+        final Square kingStartSquare = move.getStartSquare();
+        final Square rookStartSquare = castleLocation.getRookMove().getStartSquare();
 
         final PieceColor playerToMoveColor = this.getColorToMove();
 
         // King of appropriate color on castling starting square
-        if (this.getBoard()[kx][ky].getType() != PieceType.KING) {
+        if (this.getPieceAt(kingStartSquare).getType() != PieceType.KING) {
             return false;
         }
-        if (this.getBoard()[kx][ky].getColor() != playerToMoveColor) {
+        if (this.getPieceAt(rookStartSquare).getColor() != playerToMoveColor) {
             return false;
         }
 
         // Rook of appropriate color on castling starting square
-        if (this.getBoard()[rx][ry].getType() != PieceType.ROOK) {
+        if (this.getPieceAt(rookStartSquare).getType() != PieceType.ROOK) {
             return false;
         }
-        if (this.getBoard()[rx][ry].getColor() != playerToMoveColor) {
+        if (this.getPieceAt(rookStartSquare).getColor() != playerToMoveColor) {
             return false;
         }
 
@@ -382,9 +370,7 @@ public class Position extends PositionState {
     }
 
     public boolean isLegalMove(Move move, boolean strictOnly) {
-        final int x1 = move.getStartSquare().getX();
-        final int y1 = move.getStartSquare().getY();
-        final PieceType pieceTypeToMove = this.getBoard()[x1][y1].getType();
+        final PieceType pieceTypeToMove = this.getPieceAt(move.getStartSquare()).getType();
         Position newPosition;
 
         boolean legal;
@@ -424,7 +410,7 @@ public class Position extends PositionState {
         final int dy = y2 - y1;
         final int ady = Math.abs(dy);
 
-        final Piece pawnToMove = this.getBoard()[x1][y1];
+        final Piece pawnToMove = this.getPieceAt(move.getStartSquare());
         final PieceColor pawnColor = pawnToMove.getColor();
         final boolean promotionMove = (move.getPromotionPieceType() != PieceType.NONE);
 
@@ -466,11 +452,11 @@ public class Position extends PositionState {
             }
         } else if (ady == 2) {
             if (pawnColor == PieceColor.WHITE) {
-                if (y1 != Chess.WHITE_PAWN_START_Y || !this.getBoard()[x1][y1 + 1].equals(Piece.NONE)) {
+                if (y1 != Chess.WHITE_PAWN_START_Y || !this.getPieceAt(new Square(x1, y1 + 1)).equals(Piece.NONE)) {
                     return false;
                 }
             } else if (pawnColor == PieceColor.BLACK) {
-                if (y1 != Chess.BLACK_PAWN_START_Y || !this.getBoard()[x1][y1 - 1].equals(Piece.NONE)) {
+                if (y1 != Chess.BLACK_PAWN_START_Y || !this.getPieceAt(new Square(x1, y1 - 1)).equals(Piece.NONE)) {
                     return false;
                 }
             }
@@ -493,7 +479,7 @@ public class Position extends PositionState {
         final int dy = y2 - y1;
         final int adx = Math.abs(dx);
 
-        final Piece pawnToMove = this.getBoard()[x1][y1];
+        final Piece pawnToMove = this.getPieceAt(move.getStartSquare());
         final PieceColor pawnColor = pawnToMove.getColor();
 
         if (pawnToMove.getType() != PieceType.PAWN) {
@@ -533,9 +519,7 @@ public class Position extends PositionState {
     }
 
     public boolean isMovablePieceAtSquare(Square startSquare) {
-        final int sx = startSquare.getX();
-        final int sy = startSquare.getY();
-        final Piece pieceToMove = getBoard()[sx][sy];
+        final Piece pieceToMove = getPieceAt(startSquare);
     
         // There should be a piece on the starting square
         if (pieceToMove.equals(Piece.NONE)) {
@@ -559,7 +543,7 @@ public class Position extends PositionState {
         final int adx = Math.abs(dx);
         final int ady = Math.abs(dy);
 
-        final Piece pawnToMove = this.getBoard()[x1][y1];
+        final Piece pawnToMove = this.getPieceAt(move.getStartSquare());
         final Square enPassantSquare = this.getEnPassantSquare();
 
         if (!isMovablePieceAtSquare(move.getStartSquare())) {
@@ -582,12 +566,12 @@ public class Position extends PositionState {
             return false;
         }
 
-        if (!this.getBoard()[x2][y2].equals(Piece.NONE)) {
+        if (!this.getPieceAt(move.getEndSquare()).equals(Piece.NONE)) {
             return false;
         }
         // If an En Passant move is from (x1,y1) to (x2,y2) it
         // captures the piece at (x2,y1)
-        if (this.getBoard()[x2][y1].equals(Piece.NONE)) {
+        if (this.getPieceAt(new Square(x2, y1)).equals(Piece.NONE)) {
             return false;
         }
 
@@ -612,10 +596,8 @@ public class Position extends PositionState {
     public boolean isLegalVectorMove(Move move) {
         final Square s1 = move.getStartSquare();
         final Square s2 = move.getEndSquare();
-        final int x1 = s1.getX();
-        final int y1 = s1.getY();
 
-        final PieceType pieceType = this.getBoard()[x1][y1].getType();
+        final PieceType pieceType = this.getPieceAt(move.getStartSquare()).getType();
 
         if(pieceType == PieceType.PAWN) {
             return false;
@@ -635,7 +617,7 @@ public class Position extends PositionState {
         }
 
         for (final Square square : Chess.getSquaresBetween(s1, s2, false)) {
-            if (!this.getBoard()[square.getX()][square.getY()].equals(Piece.NONE)) {
+            if (!this.getPieceAt(square).equals(Piece.NONE)) {
                 return false;
             }
         }

@@ -20,9 +20,7 @@ import net.rexbutler.dtchess.Square;
 public class NotationOut {
 
     public static String notationOf(PositionState position, Move move) {
-        final int x1 = move.getStartSquare().getX();
-        final int y1 = move.getStartSquare().getY();
-        final Piece piece = position.getBoard()[x1][y1];
+        final Piece piece = position.getPieceAt(move.getStartSquare());
         String notation = "";
 
         notation += Notation.PIECE_TYPE_CODES.get(piece.getType());
@@ -69,19 +67,18 @@ public class NotationOut {
     }
 
     public static String configRowFEN(PositionState position, int j) {
-        final Piece[][] config = position.getBoard();
         String fenRow = "";
         int empty_count = 0;
 
         for (int i = 0; i < Chess.BOARD_SIZE; i++) {
-            if (config[i][j] == Piece.NONE) {
+            if (position.getPieceAt(i, j).equals(Piece.NONE)) {
                 empty_count += 1;
-                if ( !(i + 1 < Chess.BOARD_SIZE) || (config[i + 1][j] != Piece.NONE) ) {
+                if ( !(i + 1 < Chess.BOARD_SIZE) || !position.getPieceAt(i + 1, j).equals(Piece.NONE) ) {
                     fenRow += "" + empty_count;
                     empty_count = 0;
                 }
             } else {
-                String n = Notation.PIECE_CODES.get(config[i][j]); 
+                String n = Notation.PIECE_CODES.get(position.getPieceAt(i, j)); 
                 fenRow += n;
             }
         }
@@ -125,11 +122,9 @@ public class NotationOut {
     public static String gridString(PositionState position) {
         String grid_str = "";
 
-        final Piece[][] board = position.getBoard();
-
         for (int j = Chess.BOARD_SIZE - 1; j >= 0; j--) {
             for (int i = 0; i < Chess.BOARD_SIZE; i++) {
-                final Piece piece = board[i][j];
+                final Piece piece = position.getPieceAt(i,j);
                 grid_str += Notation.PIECE_CODES.get(piece);
             }
             grid_str += "\n";
