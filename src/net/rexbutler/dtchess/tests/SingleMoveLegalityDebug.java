@@ -3,8 +3,8 @@ package net.rexbutler.dtchess.tests;
 import static org.junit.Assert.assertTrue;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.Position;
-import net.rexbutler.dtchess.NotationIn;
 import net.rexbutler.dtchess.PositionState;
+import net.rexbutler.dtchess.notation.NotationIn;
 
 import org.junit.After;
 import org.junit.AfterClass;

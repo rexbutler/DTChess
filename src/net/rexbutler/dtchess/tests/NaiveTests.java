@@ -7,10 +7,10 @@ package net.rexbutler.dtchess.tests;
 import java.util.HashSet;
 
 import net.rexbutler.dtchess.Move;
-import net.rexbutler.dtchess.NotationIn;
-import net.rexbutler.dtchess.NotationOut;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.Square;
+import net.rexbutler.dtchess.notation.NotationIn;
+import net.rexbutler.dtchess.notation.NotationOut;
 
 import org.junit.*;
 import static org.junit.Assert.assertTrue;

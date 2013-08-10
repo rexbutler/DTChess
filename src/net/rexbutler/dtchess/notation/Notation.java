@@ -2,11 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.rexbutler.dtchess;
+package net.rexbutler.dtchess.notation;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.rexbutler.dtchess.CastleLocation;
+import net.rexbutler.dtchess.Piece;
+import net.rexbutler.dtchess.PieceColor;
+import net.rexbutler.dtchess.PieceType;
 
 /**
  * 

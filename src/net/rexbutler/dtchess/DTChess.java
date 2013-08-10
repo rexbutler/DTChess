@@ -2,6 +2,9 @@ package net.rexbutler.dtchess;
 
 import java.util.HashSet;
 
+import net.rexbutler.dtchess.notation.NotationIn;
+import net.rexbutler.dtchess.notation.NotationOut;
+
 public class DTChess {
 
     public static void main(String[] args) {

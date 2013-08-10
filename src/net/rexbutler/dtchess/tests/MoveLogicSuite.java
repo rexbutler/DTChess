@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 import net.rexbutler.dtchess.Move;
-import net.rexbutler.dtchess.NotationOut;
 import net.rexbutler.dtchess.Position;
-import net.rexbutler.dtchess.NotationIn;
+import net.rexbutler.dtchess.notation.NotationIn;
+import net.rexbutler.dtchess.notation.NotationOut;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
