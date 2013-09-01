@@ -10,6 +10,7 @@ import net.rexbutler.dtchess.movelogic.ChessLogic;
 import net.rexbutler.dtchess.movelogic.MoveLogic;
 import net.rexbutler.dtchess.movelogic.PawnCaptureLogic;
 import net.rexbutler.dtchess.movelogic.VectorLogic;
+import net.rexbutler.dtchess.notation.NotationOut;
 
 public class Position extends PositionState {
 
@@ -34,46 +35,38 @@ public class Position extends PositionState {
         return legalMoves;
     }
 
-    public boolean applyMove(Move move) {
-        MoveLogic chessLogic = new ChessLogic();
-        
-        chessLogic.apply(this, move);
-        
+    public void updateBackgroundInfo(boolean resetHalfMoveClock) {
         // Invert the color to move
         colorToMove = colorToMove.invert();
-
-        // Update the status of the castling rights
-        updateCastlingRights(move);
-        
         // Clear the En Passant square, E.P. capture is available for only one
         // move
         enPassantSquare = null;
-
-//        // TODO Fix
-//        // Reset or increment half move clock
-//        if (isCapture(move) || isLegalPawnMove) {
-//            halfMoveClock = 0;
-//        } else {
-//            halfMoveClock++;
-//        }
-
+        // Reset or increment half move clock
+        if (resetHalfMoveClock) {
+            halfMoveClock = 0;
+        } else {
+            halfMoveClock++;
+        }
+        // Increment the full move count
         fullMoveCount++;
-
-        return true; // TODO
     }
 
     public void updateCastlingRights(Move move) {
-        // If pieces move off of the king or rook castling start square, that castling option is
+        // If pieces move off of the king or rook castling start square, that
+        // castling option is
         // no longer available
-        for(CastleLocation castleLocation : CastleLocation.values()) {
-            if(move.getStartSquare().equals(castleLocation.getKingMove().getStartSquare())
-                    || move.getStartSquare().equals(castleLocation.getRookMove().getStartSquare())) {
-                
+        for (CastleLocation castleLocation : CastleLocation.values()) {
+            Square kingStartSquare = castleLocation.getKingMove().getStartSquare();
+            Square rookStartSquare = castleLocation.getRookMove().getStartSquare();
+            
+            if (move.getStartSquare().equals(kingStartSquare)
+                    || move.getStartSquare().equals(rookStartSquare)) {
+
                 castlingRights.put(castleLocation, false);
             }
         }
     }
-    
+
     public boolean movePiece(Move move) {
         final Piece pieceToMove = board[move.getStartSquare().getX()][move.getStartSquare().getY()];
 
@@ -90,7 +83,7 @@ public class Position extends PositionState {
             for (int by = 0; by < Chess.BOARD_SIZE; by++) {
                 final Square square1 = new Square(bx, by);
 
-                if (!this.getPieceAt(new Square(bx,by)).equals(Piece.NONE)) {
+                if (!this.getPieceAt(new Square(bx, by)).equals(Piece.NONE)) {
                     moves.addAll(possibleMovesWhichStartAt(square1));
                 }
             }
@@ -104,7 +97,7 @@ public class Position extends PositionState {
 
         for (final MoveVector moveVector : Chess.pieceVectors.get(pieceType)) {
             final Square square2 = square1.addVector(moveVector);
-            if(square2.isOnBoard()) {
+            if (square2.isOnBoard()) {
                 moves.add(new Move(square1, square2));
             }
         }
@@ -115,29 +108,29 @@ public class Position extends PositionState {
         final HashSet<Move> moves = new HashSet<>();
         int x2 = square2.getX();
         int y2 = square2.getY();
-        
+
         for (int x1 = 0; x1 < Chess.BOARD_SIZE; x1++) {
             for (int y1 = 0; y1 < Chess.BOARD_SIZE; y1++) {
                 int adx = Math.abs(x2 - x1);
                 int ady = Math.abs(y2 - y1);
-                
-                if(board[x1][y1].equals(Piece.NONE)) {
+
+                if (board[x1][y1].equals(Piece.NONE)) {
                     continue;
                 }
 
-                if(board[x1][y1].getColor() != getColorToMove()) {
+                if (board[x1][y1].getColor() != getColorToMove()) {
                     continue;
                 }
-                
-                if((adx == 0) && (ady == 0)) {
+
+                if ((adx == 0) && (ady == 0)) {
                     continue;
                 }
-                
-                if( (adx == 0) || (ady == 0) || (adx == ady) || (adx == 2 && ady == 1) || (adx == 1 && ady == 2) ) {
-                    Square square1 = new Square(x1,y1);
-                    
-                    moves.add(new Move(square1,square2));
-                    if(board[x1][y1].getType() == PieceType.PAWN) {
+
+                if ((adx == 0) || (ady == 0) || (adx == ady) || (adx == 2 && ady == 1) || (adx == 1 && ady == 2)) {
+                    Square square1 = new Square(x1, y1);
+
+                    moves.add(new Move(square1, square2));
+                    if (board[x1][y1].getType() == PieceType.PAWN) {
                         moves.add(new Move(square1, square2, PieceType.QUEEN));
                         moves.add(new Move(square1, square2, PieceType.KNIGHT));
                         moves.add(new Move(square1, square2, PieceType.ROOK));
@@ -149,7 +142,7 @@ public class Position extends PositionState {
 
         return moves;
     }
-    
+
     public boolean isAttackedByColor(Square target, PieceColor color) {
         Position modPosition;
 
@@ -202,39 +195,37 @@ public class Position extends PositionState {
     public boolean isKingToMoveInCheck() {
         Position opponentToMovePosition = new Position(this);
         opponentToMovePosition.setColorToMove(this.getColorToMove().invert());
-       
+
         return opponentToMovePosition.isKingLeftInCheck();
     }
-    
+
     public boolean isKingLeftInCheck() {
         MoveLogic vectorLogic = new VectorLogic();
         MoveLogic pawnCaptureLogic = new PawnCaptureLogic();
-        
+
         HashSet<Move> attackingMoves;
         PieceColor colorToMove = this.getColorToMove();
         int kx = -1; // If search succeeds, these should be set to "real" values
         int ky = -1;
-        
-        squareloop:
-        for(int j = 0; j < Chess.BOARD_SIZE; j++) {
-            for(int i = 0; i < Chess.BOARD_SIZE; i++) {
-                Piece pieceHere = this.getPieceAt(new Square(i,j));
-                if(pieceHere.getType() == PieceType.KING 
-                        && pieceHere.getColor() == colorToMove.invert()) {
+
+        squareloop: for (int j = 0; j < Chess.BOARD_SIZE; j++) {
+            for (int i = 0; i < Chess.BOARD_SIZE; i++) {
+                Piece pieceHere = this.getPieceAt(new Square(i, j));
+                if (pieceHere.getType() == PieceType.KING && pieceHere.getColor() == colorToMove.invert()) {
                     kx = i;
                     ky = j;
                     break squareloop;
                 }
             }
         }
-        
-        assert ((kx != -1) || (ky != -1)) : "Unexpected search failure, inconsistent state.  King not found."; // TODO : Refactor
-        Square kingSquare = new Square(kx,ky);
-        
+
+        assert ((kx != -1) || (ky != -1)) : "Unexpected search failure, inconsistent state.  King not found.";
+        Square kingSquare = new Square(kx, ky);
+
         attackingMoves = possibleMovesWhichEndAt(kingSquare);
-        
-        for(Move move : attackingMoves) {
-            if(vectorLogic.isLegal(this, move) || pawnCaptureLogic.isLegal(this, move)) {
+
+        for (Move move : attackingMoves) {
+            if (vectorLogic.isLegal(this, move) || pawnCaptureLogic.isLegal(this, move)) {
                 return true;
             }
         }
@@ -243,48 +234,48 @@ public class Position extends PositionState {
 
     public boolean isLegalMove(Move move, boolean strictOnly) {
         MoveLogic chessLogic = new ChessLogic();
-        Position newPosition;
         boolean legal = chessLogic.isLegal(this, move);
-        
+        Position newPosition;
+
         // If strictOnly is false, we are done
         // Also, if not legal in the basic sense
         // we know not legal in strict sense
         if (!strictOnly || legal == false) {
             return legal;
         } else {
-            // At this point, check if the king is in check 
+            // At this point, check if the king is in check
             newPosition = new Position(this);
-            newPosition.applyMove(move);
-            
+            chessLogic.apply(newPosition, move);
+
             return !newPosition.isKingLeftInCheck();
         }
     }
 
     public boolean isMovablePieceAtSquare(Square startSquare) {
         final Piece pieceToMove = getPieceAt(startSquare);
-    
+
         // There should be a piece on the starting square
         if (pieceToMove.equals(Piece.NONE)) {
             return false;
         }
-    
+
         // The color of the piece being moved must be the color
         // of the player to move
         return (pieceToMove.getColor() == getColorToMove());
     }
-    
+
     public boolean isCheckmate() {
-        if(allLegalMoves(true).size() == 0) {
-            if(isKingToMoveInCheck()) {
+        if (allLegalMoves(true).size() == 0) {
+            if (isKingToMoveInCheck()) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public boolean isDraw() {
-        if(allLegalMoves(true).size() == 0) {
-            if(!isKingToMoveInCheck()) {
+        if (allLegalMoves(true).size() == 0) {
+            if (!isKingToMoveInCheck()) {
                 return true;
             }
         }

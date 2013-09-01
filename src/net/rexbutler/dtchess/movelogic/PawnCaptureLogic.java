@@ -83,6 +83,8 @@ public class PawnCaptureLogic implements MoveLogic {
         } else {
             position.movePiece(move);
         }
+        position.updateCastlingRights(move);
+        position.updateBackgroundInfo(true);        
         return true;
     }
 }

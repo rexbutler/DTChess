@@ -85,6 +85,9 @@ public class KingCastlingLogic implements MoveLogic {
         final Move rookMove = castleLocation.getRookMove();
         position.movePiece(move);
         position.movePiece(rookMove);
+
+        position.updateCastlingRights(move);
+        position.updateBackgroundInfo(false);
         return true;
     }
 }

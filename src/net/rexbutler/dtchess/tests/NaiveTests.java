@@ -9,6 +9,7 @@ import java.util.HashSet;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.Square;
+import net.rexbutler.dtchess.movelogic.ChessLogic;
 import net.rexbutler.dtchess.notation.NotationIn;
 import net.rexbutler.dtchess.notation.NotationOut;
 
@@ -29,33 +30,26 @@ public class NaiveTests {
         System.out.println(position.isKingToMoveInCheck());
         System.out.println(position.isDraw());
         System.out.println(position.isCheckmate());
-        
-//        Move E8F8 = NotationIn.moveFromNotation("e8f8");
-//        System.out.println(position.isLegalMove(E8F8, true));
-//        
-//        for(Move move : position.allLegalMoves(true)) {
-//            System.out.println(NotationOut.notationOfMove(move));
-//        }
     }
     
     public static void checkmateTest() {
-        Position p = new Position(true);
+        ChessLogic chessLogic = new ChessLogic();
+        Position position = new Position(true);
         Move move;
         String[] moves = {"f2f4", "e7e6", "g2g4", "d8h4"};
         
         for(int i = 0; i < moves.length; i++) {
             move = NotationIn.moveFromNotation(moves[i]);
             System.out.println(i + " " + moves[i]);
-            assertTrue(p.isLegalMove(move, true));
-            p.applyMove(move);
-            System.out.println(NotationOut.longDescription(p));        
+            assertTrue(position.isLegalMove(move, true));
+            chessLogic.apply(position, move);
+            System.out.println(NotationOut.longDescription(position));        
         }
         
-        for(Move mv : p.allLegalMoves(true)) {
-            System.out.println(NotationOut.notationOf(p, mv));
+        for(Move mv : position.allLegalMoves(true)) {
+            System.out.println(NotationOut.notationOf(position, mv));
         }
-        
-        System.out.println(p.isCheckmate());
+        System.out.println(position.isCheckmate());
     }
     
     public static void test1() {

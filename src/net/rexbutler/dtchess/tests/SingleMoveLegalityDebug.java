@@ -23,12 +23,12 @@ public class SingleMoveLegalityDebug {
 
     @BeforeClass
     public static void oneTimeSetUp() {
-        FEN = "K1k5/8/8/8/1pP1Pp2/8/8/8 b - e3 0 1";
+        FEN = "r3k2r/8/8/8/8/4b3/8/R3K2R w - - 0 1";
         position = NotationIn.positionFromFEN(FEN);
-        strict = false;
+        strict = true;
         
-        moveNotation = "f4e3";
-        legal = true;
+        moveNotation = "e1d1";
+        legal = false;
         
         move = NotationIn.moveFromNotation(moveNotation);
     }

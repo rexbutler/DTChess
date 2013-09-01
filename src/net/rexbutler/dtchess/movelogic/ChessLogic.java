@@ -12,12 +12,14 @@ public class ChessLogic implements MoveLogic {
     public static final MoveLogic KING_CASTLING_LOGIC = new KingCastlingLogic();
     public static final MoveLogic PAWN_ADVANCE_LOGIC = new PawnAdvanceLogic();
     public static final MoveLogic PAWN_CAPTURE_LOGIC = new PawnCaptureLogic();
+    public static final MoveLogic PAWN_EN_PASSANT_LOGIC = new PawnEnPassantLogic();
     public static final MoveLogic VECTOR_LOGIC = new VectorLogic();
 
     public ChessLogic() {
         ALL_LOGICS.add(KING_CASTLING_LOGIC);
         ALL_LOGICS.add(PAWN_ADVANCE_LOGIC);
         ALL_LOGICS.add(PAWN_CAPTURE_LOGIC);
+        ALL_LOGICS.add(PAWN_EN_PASSANT_LOGIC);
         ALL_LOGICS.add(VECTOR_LOGIC);
     }
     

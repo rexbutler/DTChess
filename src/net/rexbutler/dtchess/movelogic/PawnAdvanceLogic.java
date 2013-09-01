@@ -99,6 +99,9 @@ public class PawnAdvanceLogic implements MoveLogic {
         } else {
             position.movePiece(move);
         }
-        return true;
+
+        position.updateCastlingRights(move);
+        position.updateBackgroundInfo(true);
+        return true;        
     }
 }

@@ -67,7 +67,9 @@ public class VectorLogic implements MoveLogic {
     @Override
     public boolean apply(Position position, Move move) {
         position.movePiece(move);
+
+        position.updateCastlingRights(move);
+        position.updateBackgroundInfo(position.isCapture(move));        
         return true;
     }
-
 }

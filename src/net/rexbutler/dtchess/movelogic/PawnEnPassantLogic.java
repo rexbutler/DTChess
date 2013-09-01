@@ -84,7 +84,9 @@ public class PawnEnPassantLogic implements MoveLogic{
         position.movePiece(move);
         // Clear the En Passant Square
         position.setPieceAt(enPassantSquare, Piece.NONE); // TODO
+
+        position.updateCastlingRights(move);
+        position.updateBackgroundInfo(true);
         return true;
     }
-
 }
