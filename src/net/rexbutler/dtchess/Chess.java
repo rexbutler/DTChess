@@ -7,6 +7,9 @@ package net.rexbutler.dtchess;
 import java.util.EnumMap;
 import java.util.HashSet;
 
+import net.rexbutler.dtchess.movelogic.ChessLogic;
+import net.rexbutler.dtchess.movelogic.MoveLogic;
+
 public class Chess {
     public static final int BOARD_SIZE = 8;
 
@@ -25,6 +28,8 @@ public class Chess {
     public static final int WHITE_PAWN_PROMOTED_Y = 7;
     public static final int BLACK_PAWN_PROMOTED_Y = 0;
 
+    public static final int CASTLING_ABS_DELTA_X = 2;
+    
     public static final PieceColor STARTING_PLAYER_COLOR = PieceColor.WHITE;
     public static final Piece[][] EMPTY_BOARD = new Piece[BOARD_SIZE][BOARD_SIZE];
     public static final Piece[][] STARTING_CONFIG = {
@@ -39,6 +44,8 @@ public class Chess {
 
     public static final EnumMap<PieceType, HashSet<MoveVector>> pieceVectors = new EnumMap<PieceType, HashSet<MoveVector>>(PieceType.class);    
     
+    public static final MoveLogic CHESS_LOGIC = new ChessLogic();
+   
     static {
         for (int j = 0; j < Chess.BOARD_SIZE; j++) {
             for (int i = 0; i < Chess.BOARD_SIZE; i++) {

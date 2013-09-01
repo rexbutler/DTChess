@@ -25,10 +25,10 @@ public class SingleMoveLegalityDebug {
     public static void oneTimeSetUp() {
         FEN = "K1k5/8/8/8/1pP1Pp2/8/8/8 b - e3 0 1";
         position = NotationIn.positionFromFEN(FEN);
-        strict = true;
+        strict = false;
         
         moveNotation = "f4e3";
-        legal = false;
+        legal = true;
         
         move = NotationIn.moveFromNotation(moveNotation);
     }
