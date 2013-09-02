@@ -89,10 +89,9 @@ public class Position extends PositionState {
     public boolean movePiece(Move move) {
         final Piece pieceToMove = board[move.getStartSquare().getX()][move.getStartSquare().getY()];
 
-        board[move.getEndSquare().getX()][move.getEndSquare().getY()] = pieceToMove;
-        board[move.getStartSquare().getX()][move.getStartSquare().getY()] = Piece.NONE; // TODO
-
-        return true; // TODO
+        setPieceAt(move.getEndSquare(), pieceToMove);
+        setPieceAt(move.getStartSquare(), Piece.NONE);
+        return true;
     }
 
     public HashSet<Move> possibleMoves() {
@@ -133,11 +132,11 @@ public class Position extends PositionState {
                 int adx = Math.abs(x2 - x1);
                 int ady = Math.abs(y2 - y1);
 
-                if (board[x1][y1].equals(Piece.NONE)) {
+                if (getPieceAt(new Square(x1, y1)).equals(Piece.NONE)) {
                     continue;
                 }
 
-                if (board[x1][y1].getColor() != getColorToMove()) {
+                if (getPieceAt(new Square(x1, y1)).getColor() != getColorToMove()) {
                     continue;
                 }
 
