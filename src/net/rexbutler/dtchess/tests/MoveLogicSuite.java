@@ -12,7 +12,6 @@ import java.util.List;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.notation.NotationIn;
-import net.rexbutler.dtchess.notation.NotationOut;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -110,14 +109,14 @@ public class MoveLogicSuite {
             position = NotationIn.positionFromFEN(FEN);
             
             String assertNote = "\n[" + id + "]\n[" + FEN + "]\nThe move [" + legalMoveNotations[i] + "] should be legal.";
-            assertTrue(assertNote, position.isLegalMove(legalMoves[i], true));
+            assertTrue(assertNote, position.isLegal(legalMoves[i], true));
         }
 
         for (int i = 0; i < illegalMoves.length; i++) {
             position = NotationIn.positionFromFEN(FEN);
             
             String assertNote = "\n[" + id + "]\n[" + FEN + "]\nThe move [" + illegalMoveNotations[i] + "] should -not- be legal.";
-            assertFalse(assertNote, position.isLegalMove(illegalMoves[i], true));
+            assertFalse(assertNote, position.isLegal(illegalMoves[i], true));
         }
     }
 }

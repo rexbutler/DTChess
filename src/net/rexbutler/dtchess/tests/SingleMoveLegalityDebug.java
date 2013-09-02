@@ -47,6 +47,6 @@ public class SingleMoveLegalityDebug {
 
     @Test
     public void testSingleMoveLegality() {
-        assertTrue(position.isLegalMove(move, strict) == legal);
+        assertTrue(position.isLegal(move, strict) == legal);
     }
 }

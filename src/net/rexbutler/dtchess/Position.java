@@ -7,6 +7,7 @@ package net.rexbutler.dtchess;
 import java.util.HashSet;
 
 import net.rexbutler.dtchess.movelogic.ChessLogic;
+import net.rexbutler.dtchess.movelogic.SimpleChessLogic;
 import net.rexbutler.dtchess.movelogic.MoveLogic;
 import net.rexbutler.dtchess.movelogic.PawnCaptureLogic;
 import net.rexbutler.dtchess.movelogic.VectorLogic;
@@ -23,18 +24,36 @@ public class Position extends PositionState {
     }
 
     public HashSet<Move> allLegalMoves(boolean strictOnly) {
+        MoveLogic chessLogic; 
         HashSet<Move> possibleMoves = new HashSet<>();
         final HashSet<Move> legalMoves = new HashSet<>();
 
+        if(strictOnly) {
+            chessLogic = new ChessLogic();
+        } else {
+            chessLogic = new SimpleChessLogic();
+        }
+        
         possibleMoves = possibleMoves();
         for (final Move move : possibleMoves) {
-            if (isLegalMove(move, strictOnly)) {
+            if (chessLogic.isLegal(this, move)) {
                 legalMoves.add(move);
             }
         }
         return legalMoves;
     }
 
+    public boolean isLegal(Move move, boolean strictOnly) {
+        MoveLogic chessLogic; 
+
+        if(strictOnly) {
+            chessLogic = new ChessLogic();
+        } else {
+            chessLogic = new SimpleChessLogic();
+        }    
+        return chessLogic.isLegal(this, move);
+    }
+        
     public void updateBackgroundInfo(boolean resetHalfMoveClock) {
         // Invert the color to move
         colorToMove = colorToMove.invert();
@@ -144,6 +163,7 @@ public class Position extends PositionState {
     }
 
     public boolean isAttackedByColor(Square target, PieceColor color) {
+        MoveLogic simpleChessLogic = new SimpleChessLogic();
         Position modPosition;
 
         if (this.getPieceAt(target).getColor().invert() != color) {
@@ -161,7 +181,7 @@ public class Position extends PositionState {
             for (int j = 0; j < Chess.BOARD_SIZE; j++) {
                 final Square source = new Square(i, j);
                 final Move move = new Move(source, target);
-                if (modPosition.isLegalMove(move, false)) {
+                if (simpleChessLogic.isLegal(this, move)) {
                     return true;
                 }
             }
@@ -230,25 +250,6 @@ public class Position extends PositionState {
             }
         }
         return false;
-    }
-
-    public boolean isLegalMove(Move move, boolean strictOnly) {
-        MoveLogic chessLogic = new ChessLogic();
-        boolean legal = chessLogic.isLegal(this, move);
-        Position newPosition;
-
-        // If strictOnly is false, we are done
-        // Also, if not legal in the basic sense
-        // we know not legal in strict sense
-        if (!strictOnly || legal == false) {
-            return legal;
-        } else {
-            // At this point, check if the king is in check
-            newPosition = new Position(this);
-            chessLogic.apply(newPosition, move);
-
-            return !newPosition.isKingLeftInCheck();
-        }
     }
 
     public boolean isMovablePieceAtSquare(Square startSquare) {

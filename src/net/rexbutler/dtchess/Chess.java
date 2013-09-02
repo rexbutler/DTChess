@@ -7,7 +7,7 @@ package net.rexbutler.dtchess;
 import java.util.EnumMap;
 import java.util.HashSet;
 
-import net.rexbutler.dtchess.movelogic.ChessLogic;
+import net.rexbutler.dtchess.movelogic.SimpleChessLogic;
 import net.rexbutler.dtchess.movelogic.MoveLogic;
 
 public class Chess {
@@ -44,7 +44,7 @@ public class Chess {
 
     public static final EnumMap<PieceType, HashSet<MoveVector>> pieceVectors = new EnumMap<PieceType, HashSet<MoveVector>>(PieceType.class);    
     
-    public static final MoveLogic CHESS_LOGIC = new ChessLogic();
+    public static final MoveLogic CHESS_LOGIC = new SimpleChessLogic();
    
     static {
         for (int j = 0; j < Chess.BOARD_SIZE; j++) {
