@@ -3,15 +3,7 @@ package net.rexbutler.dtchess.movelogic;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.Position;
 
-public class ChessLogic implements MoveLogic {
-    public ChessLogic() {
-    }
-    
-    @Override
-    public boolean caseApplies(Position position, Move move) {
-        return true;
-    }
-
+public class ChessLogic extends SimpleChessLogic implements MoveLogic {
     @Override
     public boolean isLegal(Position position, Move move) {
         MoveLogic simpleChessLogic = new SimpleChessLogic();
@@ -25,13 +17,6 @@ public class ChessLogic implements MoveLogic {
             simpleChessLogic.apply(newPosition, move);
             return !newPosition.isKingLeftInCheck();
         }
-    }
-
-    @Override
-    public boolean apply(Position position, Move move) {
-        MoveLogic simpleChessLogic = new SimpleChessLogic();
-        simpleChessLogic.apply(position, move);
-        return true;
     }
 
 }

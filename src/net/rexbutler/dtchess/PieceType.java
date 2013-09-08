@@ -1,7 +1,6 @@
 package net.rexbutler.dtchess;
 
 public enum PieceType {
-
     NONE("None", false),
     PAWN("Pawn", false),
     KNIGHT("Knight", true),

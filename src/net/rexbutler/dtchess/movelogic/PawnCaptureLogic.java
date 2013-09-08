@@ -1,14 +1,29 @@
 package net.rexbutler.dtchess.movelogic;
 
+import java.util.HashSet;
+
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
+import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.Piece;
 import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 
 public class PawnCaptureLogic implements MoveLogic {
-
+    private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
+    
+    public PawnCaptureLogic() {
+        possibleVectors.add(new MoveVector(1, 1));
+        possibleVectors.add(new MoveVector(-1, -1));
+        possibleVectors.add(new MoveVector(-1, 1));
+        possibleVectors.add(new MoveVector(1, -1));        
+    }
+    
+    public HashSet<MoveVector> getPossibleVectors() {
+        return possibleVectors;
+    }    
+    
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
@@ -16,11 +31,7 @@ public class PawnCaptureLogic implements MoveLogic {
         boolean isCapture = position.isCapture(move);
         boolean isRightDeltaX = (move.deltaX() != 0);
         
-        if(isRightPiece && isRightDeltaX && isCapture) {
-            return true;
-        } else {
-            return false;
-        }
+        return (isRightPiece && isRightDeltaX && isCapture);
     }
 
     @Override

@@ -5,7 +5,13 @@
 package net.rexbutler.dtchess;
 
 public class MoveVector {
-
+    public final static int ABS_VECTOR_LIMIT = Chess.BOARD_SIZE - 1;
+    
+    public MoveVector(Move move) {
+        dx = move.getEndSquare().getX() - move.getStartSquare().getX();
+        dy = move.getEndSquare().getY() - move.getStartSquare().getY();
+    }
+    
     public MoveVector(int aDeltaX, int aDeltaY) {
         dx = aDeltaX;
         dy = aDeltaY;
@@ -40,7 +46,7 @@ public class MoveVector {
         if (this == null) {
             return false;
         }
-        if (!(otherObject instanceof Square)) {
+        if (!(otherObject instanceof MoveVector)) {
             return false;
         }
         if (getClass() != otherObject.getClass()) {
@@ -62,7 +68,6 @@ public class MoveVector {
         return "(" + dx + "," + dy + ")"; // Unique
     }
 
-    final static int ABS_VECTOR_LIMIT = Chess.BOARD_SIZE - 1;
     private final int dx;
     private final int dy;
 }

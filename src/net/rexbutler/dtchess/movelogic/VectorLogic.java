@@ -1,45 +1,26 @@
 package net.rexbutler.dtchess.movelogic;
 
+import java.util.HashSet;
+
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
+import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.Piece;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Square;
 
-public class VectorLogic implements MoveLogic {
-
-    @Override
-    public boolean caseApplies(Position position, Move move) {
-        PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        // Every knight, bishop, rook, queen or "regular" king move is covered in this case,
-        // except for king castling moves.
-        if(pieceType.equals(PieceType.KNIGHT) 
-                || pieceType.equals(PieceType.BISHOP)
-                || pieceType.equals(PieceType.ROOK)
-                || pieceType.equals(PieceType.QUEEN)
-                || pieceType.equals(PieceType.KING)) {
-            
-            // This is necessary to rule out a castling move
-            if(pieceType.equals(PieceType.KING) 
-                    && Math.abs(move.deltaX()) >= Chess.CASTLING_ABS_DELTA_X) {
-                return false;
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
+public abstract class VectorLogic {
+    abstract public HashSet<MoveVector> getPossibleVectors();
+    
     public boolean isLegal(Position position, Move move) {
+        final HashSet<MoveVector> possibleVectors = getPossibleVectors();
+        final MoveVector moveVector = new MoveVector(move);
         final Square s1 = move.getStartSquare();
         final Square s2 = move.getEndSquare();
-
         final PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
 
-        if(pieceType == PieceType.PAWN) {
+        if(pieceType.equals(PieceType.PAWN)) {
             return false;
         }
         if (!position.isMovablePieceAtSquare(s1)) {
@@ -48,11 +29,14 @@ public class VectorLogic implements MoveLogic {
         if (position.isCaptureOfOwnColor(move)) {
             return false;
         }
-        if (move.getPromotionPieceType() != PieceType.NONE) {
+        if (!move.getPromotionPieceType().equals(PieceType.NONE)) {
             return false;
         }
-
-        if (!Chess.isPossibleVectorForPiece(pieceType, s1, s2)) {
+        if(!possibleVectors.contains(moveVector)) {
+            return false;
+        }
+        
+        if (!possibleVectors.contains(moveVector)) {
             return false;
         }
 
@@ -64,10 +48,8 @@ public class VectorLogic implements MoveLogic {
         return true;
     }
 
-    @Override
     public boolean apply(Position position, Move move) {
         position.movePiece(move);
-
         position.updateCastlingRights(move);
         position.updateBackgroundInfo(position.isCapture(move));        
         return true;

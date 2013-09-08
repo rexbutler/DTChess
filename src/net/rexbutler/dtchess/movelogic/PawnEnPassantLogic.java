@@ -1,7 +1,10 @@
 package net.rexbutler.dtchess.movelogic;
 
+import java.util.HashSet;
+
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
+import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.Piece;
 import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.PieceType;
@@ -9,7 +12,19 @@ import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.Square;
 
 public class PawnEnPassantLogic implements MoveLogic{
-
+    private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
+    
+    public PawnEnPassantLogic() {
+        possibleVectors.add(new MoveVector(1, 1));
+        possibleVectors.add(new MoveVector(-1, -1));
+        possibleVectors.add(new MoveVector(-1, 1));
+        possibleVectors.add(new MoveVector(1, -1));               
+    }
+    
+    public HashSet<MoveVector> getPossibleVectors() {
+        return possibleVectors;
+    }    
+    
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
@@ -17,14 +32,10 @@ public class PawnEnPassantLogic implements MoveLogic{
         boolean isCapture = position.isCapture(move);
         boolean isRightDeltaX = (move.deltaX() != 0);
         
-        if(isRightPiece && isRightDeltaX && !isCapture) {
-            return true;
-        } else {
-            return false;
-        }
+        return (isRightPiece && isRightDeltaX && !isCapture);
     }
 
-    @Override
+    @Override    
     public boolean isLegal(Position position, Move move) {
         final int x1 = move.getStartSquare().getX();
         final int y1 = move.getStartSquare().getY();
@@ -74,7 +85,6 @@ public class PawnEnPassantLogic implements MoveLogic{
         if (enPassantSquare.getX() != x2 || enPassantSquare.getY() != y2) {
             return false;
         }
-
         return true;
     }
 

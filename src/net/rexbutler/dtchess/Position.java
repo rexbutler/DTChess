@@ -7,6 +7,7 @@ package net.rexbutler.dtchess;
 import java.util.HashSet;
 
 import net.rexbutler.dtchess.movelogic.ChessLogic;
+import net.rexbutler.dtchess.movelogic.MoveAttacksKingLogic;
 import net.rexbutler.dtchess.movelogic.SimpleChessLogic;
 import net.rexbutler.dtchess.movelogic.MoveLogic;
 import net.rexbutler.dtchess.movelogic.PawnCaptureLogic;
@@ -219,15 +220,15 @@ public class Position extends PositionState {
     }
 
     public boolean isKingLeftInCheck() {
-        MoveLogic vectorLogic = new VectorLogic();
-        MoveLogic pawnCaptureLogic = new PawnCaptureLogic();
+        MoveLogic attacksKingLogic = new MoveAttacksKingLogic();
 
         HashSet<Move> attackingMoves;
         PieceColor colorToMove = this.getColorToMove();
         int kx = -1; // If search succeeds, these should be set to "real" values
         int ky = -1;
 
-        squareloop: for (int j = 0; j < Chess.BOARD_SIZE; j++) {
+        squareloop: 
+        for (int j = 0; j < Chess.BOARD_SIZE; j++) {
             for (int i = 0; i < Chess.BOARD_SIZE; i++) {
                 Piece pieceHere = this.getPieceAt(new Square(i, j));
                 if (pieceHere.getType() == PieceType.KING && pieceHere.getColor() == colorToMove.invert()) {
@@ -244,7 +245,7 @@ public class Position extends PositionState {
         attackingMoves = possibleMovesWhichEndAt(kingSquare);
 
         for (Move move : attackingMoves) {
-            if (vectorLogic.isLegal(this, move) || pawnCaptureLogic.isLegal(this, move)) {
+            if (attacksKingLogic.isLegal(this, move)) {
                 return true;
             }
         }

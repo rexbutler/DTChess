@@ -5,22 +5,31 @@ import java.util.HashSet;
 import net.rexbutler.dtchess.CastleLocation;
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
+import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Square;
 
 public class KingCastlingLogic implements MoveLogic {
+    private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
+    public KingCastlingLogic() {
+        possibleVectors.add(new MoveVector(-2, 0));
+        possibleVectors.add(new MoveVector(2, 0));
+    }
+    
+    public HashSet<MoveVector> getPossibleVectors() {
+        return possibleVectors;
+    }    
+    
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        if(pieceType.equals(PieceType.KING) 
-                && Math.abs(move.deltaX()) == Chess.CASTLING_ABS_DELTA_X) {
-            return true;
-        } else {
-            return false;
-        }
+        MoveVector moveVector = new MoveVector(move);
+        boolean rightPiece = pieceType.equals(PieceType.KING);
+        boolean rightDx = Math.abs(moveVector.getDeltaX()) == Chess.CASTLING_ABS_DELTA_X;
+        return rightPiece && rightDx;
     }
 
     @Override

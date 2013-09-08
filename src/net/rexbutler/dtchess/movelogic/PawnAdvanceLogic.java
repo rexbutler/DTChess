@@ -1,7 +1,10 @@
 package net.rexbutler.dtchess.movelogic;
 
+import java.util.HashSet;
+
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
+import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.Piece;
 import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.Position;
@@ -9,15 +12,26 @@ import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Square;
 
 public class PawnAdvanceLogic implements MoveLogic {
+    private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
+    public PawnAdvanceLogic() {
+        possibleVectors.add(new MoveVector(0, 2));
+        possibleVectors.add(new MoveVector(0, 1));
+        possibleVectors.add(new MoveVector(0, -1));
+        possibleVectors.add(new MoveVector(0, -2));
+    }
+    
+    public HashSet<MoveVector> getPossibleVectors() {
+        return possibleVectors;
+    }    
+    
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        if(pieceType.equals(PieceType.PAWN) && move.deltaX() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        boolean isRightPiece = pieceType.equals(PieceType.PAWN);
+        boolean isRightDeltaX = (move.deltaX() == 0);
+        
+        return (isRightPiece && isRightDeltaX);
     }
 
     @Override

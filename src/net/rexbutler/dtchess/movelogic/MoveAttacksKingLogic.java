@@ -6,34 +6,27 @@ import java.util.HashSet;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.Position;
-import net.rexbutler.dtchess.PieceType;
 
-public class SimpleChessLogic implements MoveLogic {
-    public static final ArrayList<MoveLogic> ALL_LOGICS = new ArrayList<>();
-    public static final MoveLogic PAWN_ADVANCE_LOGIC = new PawnAdvanceLogic();
+public class MoveAttacksKingLogic implements MoveLogic{
+
+    public static final ArrayList<MoveLogic> CHECK_MOVE_LOGICS = new ArrayList<>();
     public static final MoveLogic PAWN_CAPTURE_LOGIC = new PawnCaptureLogic();
     public static final MoveLogic PAWN_EN_PASSANT_LOGIC = new PawnEnPassantLogic();
     public static final MoveLogic KNIGHT_LOGIC = new KnightLogic();
     public static final MoveLogic BISHOP_LOGIC = new BishopLogic();
     public static final MoveLogic ROOK_LOGIC = new RookLogic();
     public static final MoveLogic QUEEN_LOGIC = new QueenLogic();
-    public static final MoveLogic KING_LOGIC = new KingLogic();
-    public static final MoveLogic KING_CASTLING_LOGIC = new KingCastlingLogic();
     
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();    
    
-    public SimpleChessLogic() {
-        ALL_LOGICS.add(PAWN_ADVANCE_LOGIC);
-        ALL_LOGICS.add(PAWN_CAPTURE_LOGIC);
-        ALL_LOGICS.add(PAWN_EN_PASSANT_LOGIC);
-        ALL_LOGICS.add(KNIGHT_LOGIC);
-        ALL_LOGICS.add(BISHOP_LOGIC);
-        ALL_LOGICS.add(ROOK_LOGIC);        
-        ALL_LOGICS.add(QUEEN_LOGIC);        
-        ALL_LOGICS.add(KING_LOGIC);
-        ALL_LOGICS.add(KING_CASTLING_LOGIC);
-        
-        for(MoveLogic moveLogic : ALL_LOGICS) {
+    public MoveAttacksKingLogic() {
+        CHECK_MOVE_LOGICS.add(PAWN_CAPTURE_LOGIC);
+        CHECK_MOVE_LOGICS.add(PAWN_EN_PASSANT_LOGIC);
+        CHECK_MOVE_LOGICS.add(KNIGHT_LOGIC);
+        CHECK_MOVE_LOGICS.add(BISHOP_LOGIC);
+        CHECK_MOVE_LOGICS.add(ROOK_LOGIC);        
+        CHECK_MOVE_LOGICS.add(QUEEN_LOGIC);        
+        for(MoveLogic moveLogic : CHECK_MOVE_LOGICS) {
             possibleVectors.addAll(moveLogic.getPossibleVectors());
         }
     }
@@ -49,7 +42,7 @@ public class SimpleChessLogic implements MoveLogic {
 
     @Override
     public boolean isLegal(Position position, Move move) {
-        for(MoveLogic moveLogic : ALL_LOGICS) {
+        for(MoveLogic moveLogic : CHECK_MOVE_LOGICS) {
             if(moveLogic.caseApplies(position, move)) {
                 return moveLogic.isLegal(position, move);
             }
@@ -60,7 +53,7 @@ public class SimpleChessLogic implements MoveLogic {
 
     @Override
     public boolean apply(Position position, Move move) {
-        for(MoveLogic moveLogic : ALL_LOGICS) {
+        for(MoveLogic moveLogic : CHECK_MOVE_LOGICS) {
             if(moveLogic.caseApplies(position, move)) {
                 return moveLogic.apply(position, move);
             }
