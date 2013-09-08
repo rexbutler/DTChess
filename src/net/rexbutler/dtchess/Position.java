@@ -26,7 +26,7 @@ public class Position extends PositionState {
 
     public HashSet<Move> allLegalMoves(boolean strictOnly) {
         MoveLogic chessLogic; 
-        HashSet<Move> possibleMoves = new HashSet<>();
+        HashSet<Move> possibleMoves = possibleMoves();
         final HashSet<Move> legalMoves = new HashSet<>();
 
         if(strictOnly) {
@@ -34,8 +34,7 @@ public class Position extends PositionState {
         } else {
             chessLogic = new SimpleChessLogic();
         }
-        
-        possibleMoves = possibleMoves();
+
         for (final Move move : possibleMoves) {
             if (chessLogic.isLegal(this, move)) {
                 legalMoves.add(move);
