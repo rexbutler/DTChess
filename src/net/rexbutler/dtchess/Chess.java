@@ -42,8 +42,6 @@ public class Chess {
             { Piece.W_KNIGHT, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_KNIGHT },
             { Piece.W_ROOK, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_ROOK } };
 
-    public static final EnumMap<PieceType, HashSet<MoveVector>> pieceVectors = new EnumMap<PieceType, HashSet<MoveVector>>(PieceType.class);    
-    
     public static final MoveLogic CHESS_LOGIC = new SimpleChessLogic();
    
     static {
@@ -52,79 +50,6 @@ public class Chess {
                 EMPTY_BOARD[i][j] = Piece.NONE;
             }
         }
-        initPieceVectors();
-    }
-
-    public static void initPieceVectors() {
-        
-        // Pawns
-        final HashSet<MoveVector> pawnVectors = new HashSet<>();
-        pawnVectors.add(new MoveVector(0, 2));
-        pawnVectors.add(new MoveVector(0, -2));
-        pawnVectors.add(new MoveVector(0, 1));
-        pawnVectors.add(new MoveVector(0, -1));
-        pawnVectors.add(new MoveVector(1, 1));
-        pawnVectors.add(new MoveVector(-1, -1));
-        pawnVectors.add(new MoveVector(-1, 1));
-        pawnVectors.add(new MoveVector(1, -1));
-        pieceVectors.put(PieceType.PAWN, pawnVectors);
-
-        // Knights
-        final HashSet<MoveVector> knightVectors = new HashSet<>();
-        knightVectors.add(new MoveVector(1, 2));
-        knightVectors.add(new MoveVector(2, 1));
-        knightVectors.add(new MoveVector(-1, 2));
-        knightVectors.add(new MoveVector(-2, 1));
-        knightVectors.add(new MoveVector(1, -2));
-        knightVectors.add(new MoveVector(2, -1));
-        knightVectors.add(new MoveVector(-1, -2));
-        knightVectors.add(new MoveVector(-2, -1));
-        pieceVectors.put(PieceType.KNIGHT, knightVectors);
-
-        // Bishops
-        final HashSet<MoveVector> bishopVectors = new HashSet<>();
-        for (int i = -1 * MoveVector.ABS_VECTOR_LIMIT; i <= MoveVector.ABS_VECTOR_LIMIT; i++) {
-            if (i == 0) {
-                continue;
-            }
-            bishopVectors.add(new MoveVector(i, i));
-            bishopVectors.add(new MoveVector(-i, i));
-        }
-        pieceVectors.put(PieceType.BISHOP, bishopVectors);
-
-        // Rooks
-        final HashSet<MoveVector> rookVectors = new HashSet<>();
-        for (int i = -1 * MoveVector.ABS_VECTOR_LIMIT; i <= MoveVector.ABS_VECTOR_LIMIT; i++) {
-            if (i == 0) {
-                continue;
-            }
-            rookVectors.add(new MoveVector(i, 0));
-            rookVectors.add(new MoveVector(0, i));
-        }
-        pieceVectors.put(PieceType.ROOK, rookVectors);
-
-        // Queens
-        final HashSet<MoveVector> queenVectors = new HashSet<>();
-        queenVectors.addAll(bishopVectors);
-        queenVectors.addAll(rookVectors);
-        pieceVectors.put(PieceType.QUEEN, queenVectors);
-
-        // Kings
-        final HashSet<MoveVector> kingVectors = new HashSet<>();
-        kingVectors.add(new MoveVector(0, 1));
-        kingVectors.add(new MoveVector(0, -1));
-        kingVectors.add(new MoveVector(1, 0));
-        kingVectors.add(new MoveVector(-1, 0));
-        kingVectors.add(new MoveVector(1, 1));
-        kingVectors.add(new MoveVector(-1, -1));
-        kingVectors.add(new MoveVector(-1, 1));
-        kingVectors.add(new MoveVector(1, -1));
-        pieceVectors.put(PieceType.KING, kingVectors);
-
-        // Vacuous special case
-        final HashSet<MoveVector> noneVectors = new HashSet<>();
-        pieceVectors.put(PieceType.NONE, noneVectors);
-        
     }
     
     public static HashSet<Square> getSquaresBetween(Square s1, Square s2, boolean includeEnds) {
@@ -184,41 +109,4 @@ public class Chess {
         }
         return squares;
     }
-
-    public static final boolean isPossibleVectorForPiece(PieceType pieceType, Square s1, Square s2) {
-        final int x1 = s1.getX();
-        final int y1 = s1.getY();
-        final int x2 = s2.getX();
-        final int y2 = s2.getY();
-    
-        final int adx = Math.abs(x2 - x1);
-        final int ady = Math.abs(y2 - y1);
-    
-        if (adx == 0 && ady == 0) {
-            return false;
-        }
-        
-        if(pieceType == PieceType.PAWN) { 
-            return (adx <= 1 && ady <= 1) || (adx == 0 & ady == 2);
-        } else if(pieceType == PieceType.KNIGHT) {
-            return ((adx == 2 && ady == 1) || (adx == 1 && ady == 2));
-        } else if(pieceType == PieceType.BISHOP) {
-            return (adx == ady);
-        } else if(pieceType == PieceType.ROOK) {
-            return (adx == 0 || ady == 0);
-        } else if(pieceType == PieceType.QUEEN) {
-            return (adx == ady || adx == 0 || ady == 0);
-        } else if(pieceType == PieceType.KING) {
-            return (Math.max(adx, ady) == 1);
-        }
-        else if(pieceType == PieceType.NONE) {
-            // Vacuous Condition
-            return true;
-        }
-        else {
-            assert false : "Unexpected else condition";
-            return false;
-        }
-    }
-
 }

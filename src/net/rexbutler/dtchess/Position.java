@@ -4,10 +4,20 @@
  */
 package net.rexbutler.dtchess;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.rexbutler.dtchess.movelogic.BishopLogic;
 import net.rexbutler.dtchess.movelogic.ChessLogic;
+import net.rexbutler.dtchess.movelogic.KingCastlingLogic;
+import net.rexbutler.dtchess.movelogic.KingLogic;
+import net.rexbutler.dtchess.movelogic.KnightLogic;
 import net.rexbutler.dtchess.movelogic.MoveAttacksKingLogic;
+import net.rexbutler.dtchess.movelogic.PawnAdvanceLogic;
+import net.rexbutler.dtchess.movelogic.PawnEnPassantLogic;
+import net.rexbutler.dtchess.movelogic.PieceLogic;
+import net.rexbutler.dtchess.movelogic.QueenLogic;
+import net.rexbutler.dtchess.movelogic.RookLogic;
 import net.rexbutler.dtchess.movelogic.SimpleChessLogic;
 import net.rexbutler.dtchess.movelogic.MoveLogic;
 import net.rexbutler.dtchess.movelogic.PawnCaptureLogic;
@@ -110,18 +120,34 @@ public class Position extends PositionState {
     }
 
     public HashSet<Move> possibleMovesWhichStartAt(Square square1) {
+        final ArrayList<PieceLogic> pieceLogics = new ArrayList<>();
         final HashSet<Move> moves = new HashSet<>();
         final PieceType pieceType = this.getPieceAt(square1).getType();
-
-        for (final MoveVector moveVector : Chess.pieceVectors.get(pieceType)) {
-            final Square square2 = square1.addVector(moveVector);
-            if (square2.isOnBoard()) {
-                moves.add(new Move(square1, square2));
+        
+        pieceLogics.add(new PawnAdvanceLogic()); // TODO: Refactor
+        pieceLogics.add(new PawnCaptureLogic());
+        pieceLogics.add(new PawnEnPassantLogic());
+        pieceLogics.add(new KnightLogic());
+        pieceLogics.add(new BishopLogic());
+        pieceLogics.add(new RookLogic());
+        pieceLogics.add(new QueenLogic());
+        pieceLogics.add(new KingLogic());
+        pieceLogics.add(new KingCastlingLogic());
+        
+        for (PieceLogic pieceLogic : pieceLogics) {
+            if(pieceLogic.relevantPiece().equals(pieceType)) {
+                for(MoveVector moveVector : pieceLogic.getPossibleVectors()) {
+                    final Square square2 = square1.addVector(moveVector);
+                    if (square2.isOnBoard()) {
+                        moves.add(new Move(square1, square2));
+                    }
+                }
             }
         }
         return moves;
     }
 
+    // TODO: Refactor 
     public HashSet<Move> possibleMovesWhichEndAt(Square square2) {
         final HashSet<Move> moves = new HashSet<>();
         int x2 = square2.getX();
