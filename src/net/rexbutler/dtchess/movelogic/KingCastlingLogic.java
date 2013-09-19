@@ -6,12 +6,13 @@ import net.rexbutler.dtchess.CastleLocation;
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.MoveVector;
+import net.rexbutler.dtchess.Piece;
 import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Square;
 
-public class KingCastlingLogic implements MoveLogic {
+public class KingCastlingLogic implements SpecificMoveLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
     public KingCastlingLogic() {
@@ -98,5 +99,10 @@ public class KingCastlingLogic implements MoveLogic {
         position.updateCastlingRights(move);
         position.updateBackgroundInfo(false);
         return true;
+    }
+
+    @Override
+    public PieceType relevantPiece() {
+        return PieceType.KING;
     }
 }

@@ -7,7 +7,7 @@ import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Position;
 
-public class QueenLogic extends VectorLogic implements MoveLogic {
+public class QueenLogic extends VectorLogic implements SpecificMoveLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
     
     public QueenLogic() {
@@ -31,4 +31,9 @@ public class QueenLogic extends VectorLogic implements MoveLogic {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
         return pieceType.equals(PieceType.QUEEN);
     }
+    
+    @Override
+    public PieceType relevantPiece() {
+        return PieceType.QUEEN;
+    }       
 }

@@ -11,7 +11,7 @@ import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Square;
 
-public class PawnAdvanceLogic implements MoveLogic {
+public class PawnAdvanceLogic implements SpecificMoveLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
     public PawnAdvanceLogic() {
@@ -117,5 +117,10 @@ public class PawnAdvanceLogic implements MoveLogic {
         position.updateCastlingRights(move);
         position.updateBackgroundInfo(true);
         return true;        
+    }
+    
+    @Override
+    public PieceType relevantPiece() {
+        return PieceType.PAWN;
     }
 }

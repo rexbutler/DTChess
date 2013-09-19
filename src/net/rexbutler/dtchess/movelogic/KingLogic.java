@@ -8,7 +8,7 @@ import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Position;
 
-public class KingLogic extends VectorLogic implements MoveLogic {
+public class KingLogic extends VectorLogic implements SpecificMoveLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
     public KingLogic() {
@@ -33,5 +33,10 @@ public class KingLogic extends VectorLogic implements MoveLogic {
         boolean rightPiece = pieceType.equals(PieceType.KING);
         boolean rightDx = Math.abs(moveVector.getDeltaX()) < Chess.CASTLING_ABS_DELTA_X;
         return rightPiece && rightDx;
+    }
+
+    @Override
+    public PieceType relevantPiece() {
+        return PieceType.KING;
     }
 }
