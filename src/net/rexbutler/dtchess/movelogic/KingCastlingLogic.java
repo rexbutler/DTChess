@@ -12,7 +12,7 @@ import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Square;
 
-public class KingCastlingLogic implements SpecificMoveLogic {
+public class KingCastlingLogic implements PieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
     public KingCastlingLogic() {

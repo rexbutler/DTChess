@@ -11,7 +11,7 @@ import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.Square;
 
-public class PawnEnPassantLogic implements SpecificMoveLogic{
+public class PawnEnPassantLogic implements PieceLogic{
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
     
     public PawnEnPassantLogic() {

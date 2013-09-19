@@ -10,7 +10,7 @@ import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.PieceType;
 
-public class PawnCaptureLogic implements SpecificMoveLogic {
+public class PawnCaptureLogic implements PieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
     
     public PawnCaptureLogic() {
