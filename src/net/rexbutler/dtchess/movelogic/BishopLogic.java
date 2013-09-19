@@ -21,6 +21,7 @@ public class BishopLogic extends VectorLogic implements MoveLogic {
         }
     }
     
+    @Override
     public HashSet<MoveVector> getPossibleVectors() {
         return possibleVectors;
     }

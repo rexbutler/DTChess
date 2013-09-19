@@ -22,6 +22,7 @@ public class QueenLogic extends VectorLogic implements PieceLogic {
         }        
     }
     
+    @Override
     public HashSet<MoveVector> getPossibleVectors() {
         return possibleVectors;
     }

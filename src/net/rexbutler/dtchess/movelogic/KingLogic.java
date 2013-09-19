@@ -22,9 +22,10 @@ public class KingLogic extends VectorLogic implements PieceLogic {
         possibleVectors.add(new MoveVector(1, -1));
     }
     
+    @Override
     public HashSet<MoveVector> getPossibleVectors() {
         return possibleVectors;
-    }    
+    }   
     
     @Override
     public boolean caseApplies(Position position, Move move) {

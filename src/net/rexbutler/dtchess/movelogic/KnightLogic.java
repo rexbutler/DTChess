@@ -21,9 +21,10 @@ public class KnightLogic extends VectorLogic implements PieceLogic {
         possibleVectors.add(new MoveVector(-2, -1));        
     }
     
+    @Override
     public HashSet<MoveVector> getPossibleVectors() {
         return possibleVectors;
-    }    
+    }  
     
     @Override
     public boolean caseApplies(Position position, Move move) {

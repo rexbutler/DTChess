@@ -7,7 +7,7 @@ import net.rexbutler.dtchess.MoveVector;
 import net.rexbutler.dtchess.PieceType;
 import net.rexbutler.dtchess.Position;
 
-public class RookLogic extends VectorLogic implements PieceLogic {
+public class RookLogic extends VectorLogic implements VectorPieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
     public RookLogic() {
@@ -20,6 +20,7 @@ public class RookLogic extends VectorLogic implements PieceLogic {
         }            
     }
     
+    @Override
     public HashSet<MoveVector> getPossibleVectors() {
         return possibleVectors;
     }
