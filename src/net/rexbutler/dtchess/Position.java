@@ -155,26 +155,18 @@ public class Position extends PositionState {
 
         for (int x1 = 0; x1 < Chess.BOARD_SIZE; x1++) {
             for (int y1 = 0; y1 < Chess.BOARD_SIZE; y1++) {
-                int adx = Math.abs(x2 - x1);
-                int ady = Math.abs(y2 - y1);
-
-                if (getPieceAt(new Square(x1, y1)).equals(Piece.NONE)) {
+                
+                if(!this.isMovablePieceAtSquare(new Square(x1, y1))) {
                     continue;
                 }
 
-                if (getPieceAt(new Square(x1, y1)).getColor() != getColorToMove()) {
-                    continue;
-                }
+                MoveVector moveVector = new MoveVector(Math.abs(x2 - x1), Math.abs(y2 - y1));
 
-                if ((adx == 0) && (ady == 0)) {
-                    continue;
-                }
-
-                if ((adx == 0) || (ady == 0) || (adx == ady) || (adx == 2 && ady == 1) || (adx == 1 && ady == 2)) {
+                if (Chess.vectorMask(moveVector)) {
                     Square square1 = new Square(x1, y1);
 
                     moves.add(new Move(square1, square2));
-                    if (board[x1][y1].getType() == PieceType.PAWN) {
+                    if (board[x1][y1].getType().equals(PieceType.PAWN)) {
                         moves.add(new Move(square1, square2, PieceType.QUEEN));
                         moves.add(new Move(square1, square2, PieceType.KNIGHT));
                         moves.add(new Move(square1, square2, PieceType.ROOK));

@@ -109,4 +109,15 @@ public class Chess {
         }
         return squares;
     }
+
+    public static boolean vectorMask(MoveVector moveVector) {
+        int adx = Math.abs(moveVector.getDeltaX());
+        int ady = Math.abs(moveVector.getDeltaY());
+        boolean nonTrivial = (adx != 0 || ady != 0);
+        boolean diagonalVector = (adx == ady);
+        boolean rookVector = (adx == 0) || (ady == 0);
+        boolean knightVector = (adx == 2 && ady == 1) || (adx == 1 && ady == 2);
+        
+        return (nonTrivial && (knightVector || diagonalVector || rookVector));
+    }
 }
