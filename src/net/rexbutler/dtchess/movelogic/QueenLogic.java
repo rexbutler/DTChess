@@ -12,13 +12,12 @@ public class QueenLogic extends VectorLogic implements PieceLogic {
     
     public QueenLogic() {
         for (int i = -1 * MoveVector.ABS_VECTOR_LIMIT; i <= MoveVector.ABS_VECTOR_LIMIT; i++) {
-            if (i == 0) {
-                continue;
+            if (i != 0) {
+                possibleVectors.add(new MoveVector(i, 0));
+                possibleVectors.add(new MoveVector(0, i));
+                possibleVectors.add(new MoveVector(i, i));
+                possibleVectors.add(new MoveVector(-i, i));
             }
-            possibleVectors.add(new MoveVector(i, 0));
-            possibleVectors.add(new MoveVector(0, i));
-            possibleVectors.add(new MoveVector(i, i));
-            possibleVectors.add(new MoveVector(-i, i));
         }        
     }
     
