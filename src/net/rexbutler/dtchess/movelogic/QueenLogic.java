@@ -10,7 +10,7 @@ import net.rexbutler.dtchess.Position;
 public class QueenLogic extends VectorLogic implements PieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
     
-    public QueenLogic() {
+    static {
         for (int i = -1 * MoveVector.ABS_VECTOR_LIMIT; i <= MoveVector.ABS_VECTOR_LIMIT; i++) {
             if (i != 0) {
                 possibleVectors.add(new MoveVector(i, 0));
@@ -19,6 +19,9 @@ public class QueenLogic extends VectorLogic implements PieceLogic {
                 possibleVectors.add(new MoveVector(-i, i));
             }
         }        
+    }
+    
+    public QueenLogic() {
     }
     
     @Override

@@ -15,9 +15,12 @@ import net.rexbutler.dtchess.Square;
 public class KingCastlingLogic implements PieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
-    public KingCastlingLogic() {
+    static {
         possibleVectors.add(new MoveVector(-2, 0));
         possibleVectors.add(new MoveVector(2, 0));
+    }
+    
+    public KingCastlingLogic() {
     }
     
     public HashSet<MoveVector> getPossibleVectors() {

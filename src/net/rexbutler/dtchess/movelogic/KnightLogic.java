@@ -10,7 +10,7 @@ import net.rexbutler.dtchess.Position;
 public class KnightLogic extends VectorLogic implements PieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
-    public KnightLogic() {
+    static {
         possibleVectors.add(new MoveVector(1, 2));
         possibleVectors.add(new MoveVector(2, 1));
         possibleVectors.add(new MoveVector(-1, 2));
@@ -19,6 +19,9 @@ public class KnightLogic extends VectorLogic implements PieceLogic {
         possibleVectors.add(new MoveVector(2, -1));
         possibleVectors.add(new MoveVector(-1, -2));
         possibleVectors.add(new MoveVector(-2, -1));        
+    }
+    
+    public KnightLogic() {
     }
     
     @Override

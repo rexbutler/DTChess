@@ -10,13 +10,16 @@ import net.rexbutler.dtchess.Position;
 public class RookLogic extends VectorLogic implements VectorPieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
 
-    public RookLogic() {
+    static {
         for (int i = -1 * MoveVector.ABS_VECTOR_LIMIT; i <= MoveVector.ABS_VECTOR_LIMIT; i++) {
             if (i != 0) {
                 possibleVectors.add(new MoveVector(i, 0));
                 possibleVectors.add(new MoveVector(0, i));
             }
         }            
+    }
+    
+    public RookLogic() {
     }
     
     @Override

@@ -13,11 +13,14 @@ import net.rexbutler.dtchess.PieceType;
 public class PawnCaptureLogic implements PieceLogic {
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
     
-    public PawnCaptureLogic() {
+    static {
         possibleVectors.add(new MoveVector(1, 1));
         possibleVectors.add(new MoveVector(-1, -1));
         possibleVectors.add(new MoveVector(-1, 1));
         possibleVectors.add(new MoveVector(1, -1));        
+    }
+    
+    public PawnCaptureLogic() {
     }
     
     public HashSet<MoveVector> getPossibleVectors() {

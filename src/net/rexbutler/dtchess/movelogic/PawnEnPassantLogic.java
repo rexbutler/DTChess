@@ -14,11 +14,14 @@ import net.rexbutler.dtchess.Square;
 public class PawnEnPassantLogic implements PieceLogic{
     private static final HashSet<MoveVector> possibleVectors = new HashSet<>();
     
-    public PawnEnPassantLogic() {
+    static {
         possibleVectors.add(new MoveVector(1, 1));
         possibleVectors.add(new MoveVector(-1, -1));
         possibleVectors.add(new MoveVector(-1, 1));
         possibleVectors.add(new MoveVector(1, -1));               
+    }
+    
+    public PawnEnPassantLogic() {
     }
     
     public HashSet<MoveVector> getPossibleVectors() {
