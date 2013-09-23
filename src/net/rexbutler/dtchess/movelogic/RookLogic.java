@@ -30,7 +30,7 @@ public class RookLogic extends VectorLogic implements VectorPieceLogic {
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        return pieceType.equals(PieceType.ROOK);
+        return pieceType.equals(relevantPiece());
     }
 
     @Override

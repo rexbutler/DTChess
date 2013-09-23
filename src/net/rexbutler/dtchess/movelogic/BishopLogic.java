@@ -31,7 +31,7 @@ public class BishopLogic extends VectorLogic implements PieceLogic {
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        return pieceType.equals(PieceType.BISHOP);
+        return pieceType.equals(relevantPiece());
     }
 
     @Override

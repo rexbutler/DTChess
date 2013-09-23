@@ -31,7 +31,7 @@ public class PawnAdvanceLogic implements PieceLogic {
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        boolean isRightPiece = pieceType.equals(PieceType.PAWN);
+        boolean isRightPiece = pieceType.equals(relevantPiece());
         boolean isRightDeltaX = (move.deltaX() == 0);
         
         return (isRightPiece && isRightDeltaX);
@@ -52,7 +52,7 @@ public class PawnAdvanceLogic implements PieceLogic {
         final PieceColor pawnColor = pawnToMove.getColor();
         final boolean promotionMove = (move.getPromotionPieceType() != PieceType.NONE);
 
-        if (pawnToMove.getType() != PieceType.PAWN) {
+        if (pawnToMove.getType() != relevantPiece()) {
             return false;
         }
 

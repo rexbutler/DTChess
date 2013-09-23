@@ -31,7 +31,7 @@ public class KingCastlingLogic implements PieceLogic {
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
         MoveVector moveVector = new MoveVector(move);
-        boolean rightPiece = pieceType.equals(PieceType.KING);
+        boolean rightPiece = pieceType.equals(relevantPiece());
         boolean rightDx = Math.abs(moveVector.getDeltaX()) == Chess.CASTLING_ABS_DELTA_X;
         return rightPiece && rightDx;
     }

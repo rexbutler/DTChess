@@ -56,7 +56,7 @@ public class PawnEnPassantLogic implements PieceLogic{
         if (!position.isMovablePieceAtSquare(move.getStartSquare())) {
             return false;
         }
-        if (pawnToMove.getType() != PieceType.PAWN) {
+        if (pawnToMove.getType() != relevantPiece()) {
             return false;
         }
         if (move.getPromotionPieceType() != PieceType.NONE) {

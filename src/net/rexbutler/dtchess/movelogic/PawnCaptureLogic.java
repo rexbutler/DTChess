@@ -30,7 +30,7 @@ public class PawnCaptureLogic implements PieceLogic {
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        boolean isRightPiece = pieceType.equals(PieceType.PAWN);
+        boolean isRightPiece = pieceType.equals(relevantPiece());
         boolean isCapture = position.isCapture(move);
         boolean isRightDeltaX = (move.deltaX() != 0);
         
@@ -51,7 +51,7 @@ public class PawnCaptureLogic implements PieceLogic {
         final Piece pawnToMove = position.getPieceAt(move.getStartSquare());
         final PieceColor pawnColor = pawnToMove.getColor();
 
-        if (pawnToMove.getType() != PieceType.PAWN) {
+        if (pawnToMove.getType() != relevantPiece()) {
             return false;
         }
         if (!position.isMovablePieceAtSquare(move.getStartSquare())) {

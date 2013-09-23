@@ -32,7 +32,7 @@ public class QueenLogic extends VectorLogic implements PieceLogic {
     @Override
     public boolean caseApplies(Position position, Move move) {
         PieceType pieceType = position.getPieceAt(move.getStartSquare()).getType();
-        return pieceType.equals(PieceType.QUEEN);
+        return pieceType.equals(relevantPiece());
     }
     
     @Override
