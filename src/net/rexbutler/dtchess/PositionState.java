@@ -3,8 +3,10 @@ package net.rexbutler.dtchess;
 import java.util.EnumMap;
 
 /**
+ * Represents the complete state of a chess position --- except for three-fold draw by repetition
+ * info which requires a complete game log, see the Game class.
  * 
- * @author rex
+ * @author Rex Butler
  */
 public class PositionState {
 
@@ -36,8 +38,8 @@ public class PositionState {
 
     public PositionState(PositionState position) {
         board = new Piece[Chess.BOARD_SIZE][Chess.BOARD_SIZE];
-        for(int i = 0; i < Chess.BOARD_SIZE; i++) {
-            for(int j = 0; j < Chess.BOARD_SIZE; j++) {
+        for (int i = 0; i < Chess.BOARD_SIZE; i++) {
+            for (int j = 0; j < Chess.BOARD_SIZE; j++) {
                 board[i][j] = new Piece(position.board[i][j]);
             }
         }
@@ -60,7 +62,7 @@ public class PositionState {
     public boolean getCastleRights(CastleLocation cLocation) {
         return castlingRights.get(cLocation);
     }
-    
+
     public PieceColor getColorToMove() {
         return colorToMove;
     }
@@ -68,7 +70,7 @@ public class PositionState {
     public Square getEnPassantSquare() {
         return enPassantSquare;
     }
-    
+
     public int getFullMoveCount() {
         return fullMoveCount;
     }

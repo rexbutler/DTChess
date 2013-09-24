@@ -1,5 +1,10 @@
 package net.rexbutler.dtchess;
 
+/**
+ * Represents the color of a piece on the chessboard.
+ *  
+ * @author rex
+ */
 public enum PieceColor {
 
     WHITE("White"),

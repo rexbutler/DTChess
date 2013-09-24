@@ -4,12 +4,16 @@
  */
 package net.rexbutler.dtchess;
 
-import java.util.EnumMap;
 import java.util.HashSet;
 
-import net.rexbutler.dtchess.movelogic.SimpleChessLogic;
 import net.rexbutler.dtchess.movelogic.MoveLogic;
+import net.rexbutler.dtchess.movelogic.SimpleChessLogic;
 
+/**
+ * A class containing constants and a few utility methods related to the game of Chess as a whole.
+ * 
+ * @author Rex Butler
+ */
 public class Chess {
     public static final int BOARD_SIZE = 8;
 
@@ -29,9 +33,11 @@ public class Chess {
     public static final int BLACK_PAWN_PROMOTED_Y = 0;
 
     public static final int CASTLING_ABS_DELTA_X = 2;
-    
+
     public static final PieceColor STARTING_PLAYER_COLOR = PieceColor.WHITE;
     public static final Piece[][] EMPTY_BOARD = new Piece[BOARD_SIZE][BOARD_SIZE];
+
+    // @formatter:off
     public static final Piece[][] STARTING_CONFIG = {
             { Piece.W_ROOK, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_ROOK },
             { Piece.W_KNIGHT, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_KNIGHT },
@@ -41,9 +47,10 @@ public class Chess {
             { Piece.W_BISHOP, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_BISHOP },
             { Piece.W_KNIGHT, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_KNIGHT },
             { Piece.W_ROOK, Piece.W_PAWN, Piece.NONE, Piece.NONE, Piece.NONE, Piece.NONE, Piece.B_PAWN, Piece.B_ROOK } };
+    // @formatter:on
 
     public static final MoveLogic CHESS_LOGIC = new SimpleChessLogic();
-   
+
     static {
         for (int j = 0; j < Chess.BOARD_SIZE; j++) {
             for (int i = 0; i < Chess.BOARD_SIZE; i++) {
@@ -51,7 +58,17 @@ public class Chess {
             }
         }
     }
-    
+
+    /**
+     * Returns the squares directly between two squares in either a horizontal, diagonal, or
+     * vertical relationship. Returns an empty collection if the given squares are not in such a
+     * relationship.
+     * 
+     * @param s1 The first square.
+     * @param s2 The second square.
+     * @param includeEnds Whether to include the end-point squares in the list.
+     * @return The resulting squares as a HashSet.
+     */
     public static HashSet<Square> getSquaresBetween(Square s1, Square s2, boolean includeEnds) {
         int x1 = s1.getX();
         int y1 = s1.getY();
@@ -110,6 +127,12 @@ public class Chess {
         return squares;
     }
 
+    /**
+     * Determines whether the given move vector corresponds to a potential legal move.
+     * 
+     * @param moveVector The potential
+     * @return True if the move vector corresponds to a potential move, false otherwise.
+     */
     public static boolean vectorMask(MoveVector moveVector) {
         int adx = Math.abs(moveVector.getDeltaX());
         int ady = Math.abs(moveVector.getDeltaY());
@@ -117,7 +140,7 @@ public class Chess {
         boolean diagonalVector = (adx == ady);
         boolean rookVector = (adx == 0) || (ady == 0);
         boolean knightVector = (adx == 2 && ady == 1) || (adx == 1 && ady == 2);
-        
+
         return (nonTrivial && (knightVector || diagonalVector || rookVector));
     }
 }

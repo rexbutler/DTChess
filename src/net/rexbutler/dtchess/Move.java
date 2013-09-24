@@ -1,5 +1,9 @@
 package net.rexbutler.dtchess;
 
+/**
+ * Represents a move.
+ * @author Rex Butler
+ */
 public class Move {
     public Move(Square StartSquare, Square EndSquare) {
         this(StartSquare, EndSquare, PieceType.NONE);

@@ -1,5 +1,10 @@
 package net.rexbutler.dtchess;
 
+/**
+ * Represents the type of a piece on the chessboard, IE pawn, knight, bishop, or etc...
+ * 
+ * @author Rex Butler
+ */
 public enum PieceType {
     NONE("None", false),
     PAWN("Pawn", false),

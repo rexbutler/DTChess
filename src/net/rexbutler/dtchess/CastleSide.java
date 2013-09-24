@@ -1,5 +1,11 @@
 package net.rexbutler.dtchess;
 
+
+/**
+ * An enumeration representing the two sides available for a castling move.
+ * 
+ * @author Rex Butler
+ */
 public enum CastleSide {
 
     QUEEN_SIDE("Queenside"),
@@ -14,4 +20,4 @@ public enum CastleSide {
     }
 
     private final String description;
-};
+}

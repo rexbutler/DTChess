@@ -5,8 +5,9 @@
 package net.rexbutler.dtchess;
 
 /**
+ * Represents a piece on the chess board, including both type and color.
  * 
- * @author rex
+ * @author Rex Butler
  */
 public class Piece {
     public static final Piece NONE = new Piece(PieceColor.NONE, PieceType.NONE);

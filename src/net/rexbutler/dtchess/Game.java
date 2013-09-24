@@ -1,11 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.rexbutler.dtchess;
 
 import java.util.ArrayList;
 
+
+/**
+ * Represents a complete chess game.
+ * 
+ * @author Rex Butler
+ */
 public class Game {
     private Position initialPosition;
     private ArrayList<Move> gameMoves;

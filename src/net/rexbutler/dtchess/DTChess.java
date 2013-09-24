@@ -5,6 +5,11 @@ import java.util.HashSet;
 import net.rexbutler.dtchess.notation.NotationIn;
 import net.rexbutler.dtchess.notation.NotationOut;
 
+/**
+ * Demonstrates DTChess.
+ * 
+ * @author Rex Butler
+ */
 public class DTChess {
 
     public static void main(String[] args) {

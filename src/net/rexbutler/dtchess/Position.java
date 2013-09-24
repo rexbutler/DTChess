@@ -24,6 +24,12 @@ import net.rexbutler.dtchess.movelogic.PawnCaptureLogic;
 import net.rexbutler.dtchess.movelogic.VectorLogic;
 import net.rexbutler.dtchess.notation.NotationOut;
 
+/**
+ * Extends the data only PositionState class with common methods related to the position of chess
+ * board.
+ * 
+ * @author Rex Butler
+ */
 public class Position extends PositionState {
 
     public Position(boolean addInitialPieces) {
@@ -35,11 +41,11 @@ public class Position extends PositionState {
     }
 
     public HashSet<Move> allLegalMoves(boolean strictOnly) {
-        MoveLogic chessLogic; 
+        MoveLogic chessLogic;
         HashSet<Move> possibleMoves = possibleMoves();
         final HashSet<Move> legalMoves = new HashSet<>();
 
-        if(strictOnly) {
+        if (strictOnly) {
             chessLogic = new ChessLogic();
         } else {
             chessLogic = new SimpleChessLogic();
@@ -54,16 +60,16 @@ public class Position extends PositionState {
     }
 
     public boolean isLegal(Move move, boolean strictOnly) {
-        MoveLogic chessLogic; 
+        MoveLogic chessLogic;
 
-        if(strictOnly) {
+        if (strictOnly) {
             chessLogic = new ChessLogic();
         } else {
             chessLogic = new SimpleChessLogic();
-        }    
+        }
         return chessLogic.isLegal(this, move);
     }
-        
+
     public void updateBackgroundInfo(boolean resetHalfMoveClock) {
         // Invert the color to move
         colorToMove = colorToMove.invert();
@@ -87,7 +93,7 @@ public class Position extends PositionState {
         for (CastleLocation castleLocation : CastleLocation.values()) {
             Square kingStartSquare = castleLocation.getKingMove().getStartSquare();
             Square rookStartSquare = castleLocation.getRookMove().getStartSquare();
-            
+
             if (move.getStartSquare().equals(kingStartSquare)
                     || move.getStartSquare().equals(rookStartSquare)) {
 
@@ -123,7 +129,7 @@ public class Position extends PositionState {
         final ArrayList<PieceLogic> pieceLogics = new ArrayList<>();
         final HashSet<Move> moves = new HashSet<>();
         final PieceType pieceType = this.getPieceAt(square1).getType();
-        
+
         pieceLogics.add(new PawnAdvanceLogic()); // TODO: Refactor
         pieceLogics.add(new PawnCaptureLogic());
         pieceLogics.add(new PawnEnPassantLogic());
@@ -133,10 +139,10 @@ public class Position extends PositionState {
         pieceLogics.add(new QueenLogic());
         pieceLogics.add(new KingLogic());
         pieceLogics.add(new KingCastlingLogic());
-        
+
         for (PieceLogic pieceLogic : pieceLogics) {
-            if(pieceLogic.relevantPiece().equals(pieceType)) {
-                for(MoveVector moveVector : pieceLogic.getPossibleVectors()) {
+            if (pieceLogic.relevantPiece().equals(pieceType)) {
+                for (MoveVector moveVector : pieceLogic.getPossibleVectors()) {
                     final Square square2 = square1.addVector(moveVector);
                     if (square2.isOnBoard()) {
                         moves.add(new Move(square1, square2));
@@ -147,7 +153,6 @@ public class Position extends PositionState {
         return moves;
     }
 
-    // TODO: Refactor 
     public HashSet<Move> possibleMovesWhichEndAt(Square square2) {
         final HashSet<Move> moves = new HashSet<>();
         int x2 = square2.getX();
@@ -155,8 +160,8 @@ public class Position extends PositionState {
 
         for (int x1 = 0; x1 < Chess.BOARD_SIZE; x1++) {
             for (int y1 = 0; y1 < Chess.BOARD_SIZE; y1++) {
-                
-                if(!this.isMovablePieceAtSquare(new Square(x1, y1))) {
+
+                if (!this.isMovablePieceAtSquare(new Square(x1, y1))) {
                     continue;
                 }
 
@@ -244,11 +249,11 @@ public class Position extends PositionState {
         int kx = -1; // If search succeeds, these should be set to "real" values
         int ky = -1;
 
-        squareloop: 
-        for (int j = 0; j < Chess.BOARD_SIZE; j++) {
+        squareloop: for (int j = 0; j < Chess.BOARD_SIZE; j++) {
             for (int i = 0; i < Chess.BOARD_SIZE; i++) {
                 Piece pieceHere = this.getPieceAt(new Square(i, j));
-                if (pieceHere.getType() == PieceType.KING && pieceHere.getColor() == colorToMove.invert()) {
+                if (pieceHere.getType() == PieceType.KING
+                        && pieceHere.getColor() == colorToMove.invert()) {
                     kx = i;
                     ky = j;
                     break squareloop;

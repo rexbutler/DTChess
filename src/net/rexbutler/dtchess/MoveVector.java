@@ -4,14 +4,20 @@
  */
 package net.rexbutler.dtchess;
 
+/**
+ * Represents the vector of a move, or in other words the difference in x and y coordinates before
+ * and after a given move.
+ * 
+ * @author Rex Butler
+ */
 public class MoveVector {
     public final static int ABS_VECTOR_LIMIT = Chess.BOARD_SIZE - 1;
-    
+
     public MoveVector(Move move) {
         dx = move.getEndSquare().getX() - move.getStartSquare().getX();
         dy = move.getEndSquare().getY() - move.getStartSquare().getY();
     }
-    
+
     public MoveVector(int aDeltaX, int aDeltaY) {
         dx = aDeltaX;
         dy = aDeltaY;
