@@ -10,8 +10,8 @@ package net.rexbutler.dtchess;
  * In chess, if the the board is placed so the white pieces are on the near side of the board, the
  * corner square to the left is denoted "a1". This corresponds to (x,y) = (0,0) with x in
  * [0,1,...,7] mapping to the columns ["a","b",...,"h"] and y in [0,1,...,7] mapping to the rows
- * ["1","2",...,"8"]. For example, (2,4) corresponds to the square "b5". This is called the
- * algebraic notation.
+ * ["1","2",...,"8"]. For example, (2,4) corresponds to the square "b5". This is called the algebraic
+ * notation of a square.
  * 
  * @author Rex Butler
  */

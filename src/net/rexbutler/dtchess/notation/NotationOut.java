@@ -14,8 +14,9 @@ import net.rexbutler.dtchess.PositionState;
 import net.rexbutler.dtchess.Square;
 
 /**
+ * A class relevant to converting internal objects into standard chess notations.
  * 
- * @author rex
+ * @author Rex Butler
  */
 public class NotationOut {
 

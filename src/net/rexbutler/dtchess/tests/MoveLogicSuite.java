@@ -20,6 +20,11 @@ import org.junit.runners.Parameterized.Parameters;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+/**
+ * A suite to test move validation (legality and non-legality of various moves).
+ * 
+ * @author Rex Butler
+ */
 @RunWith(Parameterized.class)
 public class MoveLogicSuite {
 

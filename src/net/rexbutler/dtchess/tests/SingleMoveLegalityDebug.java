@@ -12,6 +12,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * A test class to test move validation on a specific move. Used for debugging once a problem has
+ * been located.
+ * 
+ * @author Rex Butler
+ */
 public class SingleMoveLegalityDebug {
 
     private static String FEN;
@@ -26,10 +32,10 @@ public class SingleMoveLegalityDebug {
         FEN = "K1k5/8/8/8/4N3/8/8/8 w - - 0 1";
         position = NotationIn.positionFromFEN(FEN);
         strict = true;
-        
+
         moveNotation = "e4f2";
         legal = true;
-        
+
         move = NotationIn.moveFromNotation(moveNotation);
     }
 

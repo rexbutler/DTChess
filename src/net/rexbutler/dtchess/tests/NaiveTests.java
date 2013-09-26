@@ -16,6 +16,12 @@ import net.rexbutler.dtchess.notation.NotationOut;
 import org.junit.*;
 import static org.junit.Assert.assertTrue;
 
+
+/**
+ * A few ad hoc tests of DTChess library functionality.
+ * 
+ * @author Rex Butler
+ */
 public class NaiveTests {
 
     public static void main(String[] args) {
