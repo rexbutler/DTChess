@@ -14,8 +14,9 @@ import net.rexbutler.dtchess.PieceColor;
 import net.rexbutler.dtchess.PieceType;
 
 /**
+ * A class containing constants relevant to conversion to and from standard chess notations.
  * 
- * @author rex
+ * @author Rex Butler
  */
 public class Notation {
 
