@@ -8,9 +8,11 @@ package net.rexbutler.dtchess;
  */
 public enum CastleSide {
 
+    // @formatter:off
     QUEEN_SIDE("Queenside"),
     KING_SIDE("Kingside");
-
+    // @formatter:on
+    
     private CastleSide(String aDescription) {
         description = aDescription;
     }

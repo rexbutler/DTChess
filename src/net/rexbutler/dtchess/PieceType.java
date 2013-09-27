@@ -6,6 +6,7 @@ package net.rexbutler.dtchess;
  * @author Rex Butler
  */
 public enum PieceType {
+    // @formatter: off
     NONE("None", false),
     PAWN("Pawn", false),
     KNIGHT("Knight", true),
@@ -13,7 +14,8 @@ public enum PieceType {
     ROOK("Rook", true),
     QUEEN("Queen",  true),
     KING("King", false);
-
+    // @formatter: on
+    
     private String description;
     private boolean promotionOption;
 

@@ -2,14 +2,16 @@ package net.rexbutler.dtchess;
 
 /**
  * Represents the color of a piece on the chessboard.
- *  
- * @author rex
+ * 
+ * @author Rex Butler
  */
 public enum PieceColor {
 
+    // @formatter:off
     WHITE("White"),
     BLACK("Black"),
     NONE("None");
+    // @formatter:on
 
     private final String description;
 
@@ -17,6 +19,10 @@ public enum PieceColor {
         description = aDescription;
     }
 
+    /**
+     * Returns the color opposite this color.
+     * @return White if this color is set to black, and vise versa.
+     */
     public PieceColor invert() {
         if (this == WHITE) {
             return BLACK;

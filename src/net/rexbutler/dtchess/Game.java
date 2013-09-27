@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Represents a complete chess game.
+ * Incomplete.
  * 
  * @author Rex Butler
  */

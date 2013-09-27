@@ -32,17 +32,33 @@ import net.rexbutler.dtchess.notation.NotationOut;
  */
 public class Position extends PositionState {
 
+    /**
+     * Constructor. Initialized a position with either an empty board or a board with the pieces in
+     * initial position.
+     * @param addInitialPieces True if the board the initial pieces are to be added.
+     */
     public Position(boolean addInitialPieces) {
         super(addInitialPieces);
     }
 
+    /**
+     * Constructor. Initialize this position with a specific setup.
+     * @param position The position data to initialize with.
+     */
     public Position(PositionState position) {
         super(position);
     }
 
+    /**
+     * Returns a collection containing all legal moves in this given position.
+     * @param strictOnly True if testing legality in the usual sense: moves which put one's king in
+     * check are not allowed, or false under "blitz" / chess engine rules where such moves should be
+     * considered.
+     * @return A HashSet containing the legal moves.
+     */
     public HashSet<Move> allLegalMoves(boolean strictOnly) {
         MoveLogic chessLogic;
-        HashSet<Move> possibleMoves = possibleMoves();
+        HashSet<Move> possibleMoves = potentialMoves();
         final HashSet<Move> legalMoves = new HashSet<>();
 
         if (strictOnly) {
@@ -59,6 +75,14 @@ public class Position extends PositionState {
         return legalMoves;
     }
 
+    /**
+     * Determines whether a given move is legal in the current position.
+     * @param move The move to validate.
+     * @param strictOnly True if testing legality in the usual sense: moves which put one's king in
+     * check are not allowed, or false under "blitz" / chess engine rules where such moves should be
+     * considered.
+     * @return The legality of the move as a boolean.
+     */
     public boolean isLegal(Move move, boolean strictOnly) {
         MoveLogic chessLogic;
 
@@ -70,6 +94,12 @@ public class Position extends PositionState {
         return chessLogic.isLegal(this, move);
     }
 
+    /**
+     * Updates the auxiliary, non-board setup related, information about a chess position given a
+     * move has just been made.
+     * 
+     * @param resetHalfMoveClock Flag determining whether the halfMoveClock count is reset to zero.
+     */
     public void updateBackgroundInfo(boolean resetHalfMoveClock) {
         // Invert the color to move
         colorToMove = colorToMove.invert();
@@ -86,6 +116,11 @@ public class Position extends PositionState {
         fullMoveCount++;
     }
 
+    /**
+     * Updates the castling rights given that a certain move has been made, i.e. if a king or rook
+     * has moved the associated castling move is no longer legal.
+     * @param move The move made.
+     */
     public void updateCastlingRights(Move move) {
         // If pieces move off of the king or rook castling start square, that
         // castling option is
@@ -102,6 +137,12 @@ public class Position extends PositionState {
         }
     }
 
+    /**
+     * A helper method to execute a simple non-compound move on this position. This applies to all
+     * moves except pawn promotion moves, pawn en passant moves, and caslting moves.
+     * @param move The move to execute.
+     * @return A flag indicating the move was successfully executed.
+     */
     public boolean movePiece(Move move) {
         final Piece pieceToMove = board[move.getStartSquare().getX()][move.getStartSquare().getY()];
 
@@ -110,7 +151,13 @@ public class Position extends PositionState {
         return true;
     }
 
-    public HashSet<Move> possibleMoves() {
+    /**
+     * Returns a collection of potentially legal moves determined by whether the move has the move
+     * vector for the given piece.
+     * 
+     * @return A HashSet of the potential moves.
+     */
+    public HashSet<Move> potentialMoves() {
         final HashSet<Move> moves = new HashSet<>();
 
         for (int bx = 0; bx < Chess.BOARD_SIZE; bx++) {
@@ -125,6 +172,12 @@ public class Position extends PositionState {
         return moves;
     }
 
+    /**
+     * Returns a collection of potentially legal moves determined by whether the move has the move
+     * vector for the given piece.
+     * 
+     * @return A HashSet of the potential moves.
+     */
     public HashSet<Move> possibleMovesWhichStartAt(Square square1) {
         final ArrayList<PieceLogic> pieceLogics = new ArrayList<>();
         final HashSet<Move> moves = new HashSet<>();

@@ -10,8 +10,8 @@ public enum GameResult {
     DRAW("1/2-1/2", PieceColor.NONE),
     WIN_FOR_BLACK("0-1", PieceColor.BLACK),
     UNFINISHED("", PieceColor.NONE);
-    // @formatter:off
-    
+    // @formatter:on
+
     private final String description;
     private final PieceColor colorWhoWins;
 
