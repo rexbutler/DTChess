@@ -165,7 +165,7 @@ public class Position extends PositionState {
                 final Square square1 = new Square(bx, by);
 
                 if (!this.getPieceAt(new Square(bx, by)).equals(Piece.NONE)) {
-                    moves.addAll(possibleMovesWhichStartAt(square1));
+                    moves.addAll(potentialMovesWhichStartAt(square1));
                 }
             }
         }
@@ -176,12 +176,13 @@ public class Position extends PositionState {
      * Returns a collection of potentially legal moves determined by whether the move has the move
      * vector for the given piece.
      * 
-     * @return A HashSet of the potential moves.
+     * @param startSquare The start square of the potential moves.
+     * @return A HashSet of the resulting moves.
      */
-    public HashSet<Move> possibleMovesWhichStartAt(Square square1) {
+    public HashSet<Move> potentialMovesWhichStartAt(Square startSquare) {
         final ArrayList<PieceLogic> pieceLogics = new ArrayList<>();
         final HashSet<Move> moves = new HashSet<>();
-        final PieceType pieceType = this.getPieceAt(square1).getType();
+        final PieceType pieceType = this.getPieceAt(startSquare).getType();
 
         pieceLogics.add(new PawnAdvanceLogic()); // TODO: Refactor
         pieceLogics.add(new PawnCaptureLogic());
@@ -196,9 +197,9 @@ public class Position extends PositionState {
         for (PieceLogic pieceLogic : pieceLogics) {
             if (pieceLogic.relevantPiece().equals(pieceType)) {
                 for (MoveVector moveVector : pieceLogic.getPossibleVectors()) {
-                    final Square square2 = square1.addVector(moveVector);
+                    final Square square2 = startSquare.addVector(moveVector);
                     if (square2.isOnBoard()) {
-                        moves.add(new Move(square1, square2));
+                        moves.add(new Move(startSquare, square2));
                     }
                 }
             }
@@ -206,10 +207,17 @@ public class Position extends PositionState {
         return moves;
     }
 
-    public HashSet<Move> possibleMovesWhichEndAt(Square square2) {
+    /**
+     * Returns a collection of potentially legal moves determined by whether the move has the move
+     * vector for the given piece.
+     * 
+     * @param endSquare The end square of the potential moves.
+     * @return A HashSet of the resulting moves.
+     */
+    public HashSet<Move> possibleMovesWhichEndAt(Square endSquare) {
         final HashSet<Move> moves = new HashSet<>();
-        int x2 = square2.getX();
-        int y2 = square2.getY();
+        int x2 = endSquare.getX();
+        int y2 = endSquare.getY();
 
         for (int x1 = 0; x1 < Chess.BOARD_SIZE; x1++) {
             for (int y1 = 0; y1 < Chess.BOARD_SIZE; y1++) {
@@ -223,12 +231,12 @@ public class Position extends PositionState {
                 if (Chess.vectorMask(moveVector)) {
                     Square square1 = new Square(x1, y1);
 
-                    moves.add(new Move(square1, square2));
+                    moves.add(new Move(square1, endSquare));
                     if (board[x1][y1].getType().equals(PieceType.PAWN)) {
-                        moves.add(new Move(square1, square2, PieceType.QUEEN));
-                        moves.add(new Move(square1, square2, PieceType.KNIGHT));
-                        moves.add(new Move(square1, square2, PieceType.ROOK));
-                        moves.add(new Move(square1, square2, PieceType.BISHOP));
+                        moves.add(new Move(square1, endSquare, PieceType.QUEEN));
+                        moves.add(new Move(square1, endSquare, PieceType.KNIGHT));
+                        moves.add(new Move(square1, endSquare, PieceType.ROOK));
+                        moves.add(new Move(square1, endSquare, PieceType.BISHOP));
                     }
                 }
             }
@@ -237,6 +245,9 @@ public class Position extends PositionState {
         return moves;
     }
 
+    /**
+     * Determines whether a particular square is attacked by a piece of the given color.
+     */
     public boolean isAttackedByColor(Square target, PieceColor color) {
         MoveLogic simpleChessLogic = new SimpleChessLogic();
         Position modPosition;
@@ -265,6 +276,10 @@ public class Position extends PositionState {
         return false;
     }
 
+    /**
+     * Determines whether a move is a capture of a piece of one color taking a piece of another
+     * color and thus a legal (in that sense).
+     */
     public boolean isCapture(Move move) {
         final PieceColor pieceColor1 = this.getPieceAt(move.getEndSquare()).getColor();
         final PieceColor pieceColor2 = this.getPieceAt(move.getStartSquare()).getColor();
@@ -276,6 +291,10 @@ public class Position extends PositionState {
         return (pieceColor1 != pieceColor2);
     }
 
+    /**
+     * Determines whether a move is a capture of a piece of one color taking a piece of the same
+     * color and thus not legal.
+     */
     public boolean isCaptureOfOwnColor(Move move) {
         final PieceColor pieceColor1 = this.getPieceAt(move.getStartSquare()).getColor();
         final PieceColor pieceColor2 = this.getPieceAt(move.getEndSquare()).getColor();
@@ -287,6 +306,10 @@ public class Position extends PositionState {
         return (pieceColor1 == pieceColor2);
     }
 
+    /**
+     * Determines whether the king with the move is currently attacked by a piece of the opposite
+     * color.
+     */
     public boolean isKingToMoveInCheck() {
         Position opponentToMovePosition = new Position(this);
         opponentToMovePosition.setColorToMove(this.getColorToMove().invert());
@@ -294,6 +317,9 @@ public class Position extends PositionState {
         return opponentToMovePosition.isKingLeftInCheck();
     }
 
+    /**
+     * Determines whether the king can be captured by the player with the move.
+     */
     public boolean isKingLeftInCheck() {
         MoveLogic attacksKingLogic = new MoveAttacksKingLogic();
 
@@ -302,7 +328,8 @@ public class Position extends PositionState {
         int kx = -1; // If search succeeds, these should be set to "real" values
         int ky = -1;
 
-        squareloop: for (int j = 0; j < Chess.BOARD_SIZE; j++) {
+        squareloop:
+        for (int j = 0; j < Chess.BOARD_SIZE; j++) {
             for (int i = 0; i < Chess.BOARD_SIZE; i++) {
                 Piece pieceHere = this.getPieceAt(new Square(i, j));
                 if (pieceHere.getType() == PieceType.KING
@@ -327,6 +354,10 @@ public class Position extends PositionState {
         return false;
     }
 
+    /**
+     * Determines whether the piece at the given square can be moved, i.e. that there is actually a
+     * piece there and that its color matches the color to move.
+     */
     public boolean isMovablePieceAtSquare(Square startSquare) {
         final Piece pieceToMove = getPieceAt(startSquare);
 
@@ -334,12 +365,15 @@ public class Position extends PositionState {
         if (pieceToMove.equals(Piece.NONE)) {
             return false;
         }
-
         // The color of the piece being moved must be the color
         // of the player to move
         return (pieceToMove.getColor() == getColorToMove());
     }
 
+    /**
+     * Determines whether the current position is a checkmate. In other words, that the player to
+     * move's king is attacked and that there are no legal moves available.
+     */
     public boolean isCheckmate() {
         if (allLegalMoves(true).size() == 0) {
             if (isKingToMoveInCheck()) {
@@ -349,7 +383,11 @@ public class Position extends PositionState {
         return false;
     }
 
-    public boolean isDraw() {
+    /**
+     * Determines whether the current position is a stalemate. In other words, the player to move
+     * has no legal moves available but that the king is not attacked.
+     */
+    public boolean isStatemate() {
         if (allLegalMoves(true).size() == 0) {
             if (!isKingToMoveInCheck()) {
                 return true;

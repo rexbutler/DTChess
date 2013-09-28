@@ -34,7 +34,7 @@ public class NaiveTests {
         
         position = NotationIn.positionFromFEN(fenPosition);
         System.out.println(position.isKingToMoveInCheck());
-        System.out.println(position.isDraw());
+        System.out.println(position.isStatemate());
         System.out.println(position.isCheckmate());
     }
     

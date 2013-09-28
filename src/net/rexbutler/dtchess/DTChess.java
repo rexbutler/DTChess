@@ -17,7 +17,7 @@ public class DTChess {
         
         HashSet<Move> legalMoves = position.allLegalMoves(true);
         boolean isCheckmate = position.isCheckmate();
-        boolean isDraw = position.isDraw();
+        boolean isDraw = position.isStatemate();
         //boolean isConsistent = false;
         
         System.out.println(NotationOut.longDescription(position));

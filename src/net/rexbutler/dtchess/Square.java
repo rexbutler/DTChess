@@ -10,18 +10,24 @@ package net.rexbutler.dtchess;
  * In chess, if the the board is placed so the white pieces are on the near side of the board, the
  * corner square to the left is denoted "a1". This corresponds to (x,y) = (0,0) with x in
  * [0,1,...,7] mapping to the columns ["a","b",...,"h"] and y in [0,1,...,7] mapping to the rows
- * ["1","2",...,"8"]. For example, (2,4) corresponds to the square "b5". This is called the algebraic
- * notation of a square.
+ * ["1","2",...,"8"]. For example, (2,4) corresponds to the square "b5". This is called the
+ * algebraic notation of a square.
  * 
  * @author Rex Butler
  */
 public class Square {
 
-    public Square(int xx, int yy) {
-        x = xx;
-        y = yy;
+    /**
+     * Constructor.  Construct a square with the given coordinates.
+     */
+    public Square(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
+    /**
+     * Copy constructor.
+     */
     public Square(Square square) {
         x = square.x;
         y = square.y;
@@ -35,20 +41,33 @@ public class Square {
         return y;
     }
 
+    /**
+     * Determine whether the x coordinate is a valid on the board value.
+     */
     public boolean isXOnBoard() {
         final boolean xIn = ((0 <= x) && (x < Chess.BOARD_SIZE));
         return xIn;
     }
 
+    /**
+     * Determine whether the y coordinate is a valid on the board value.
+     */
     public boolean isYOnBoard() {
         final boolean yIn = ((0 <= y) && (y < Chess.BOARD_SIZE));
         return yIn;
     }
 
+    /**
+     * Determines whether the x and y coordinates represent a on the board value.
+     * @return
+     */
     public boolean isOnBoard() {
         return isXOnBoard() && isYOnBoard();
     }
 
+    /**
+     * Add a given MoveVector to this square.
+     */
     public Square addVector(MoveVector toAdd) {
         return new Square(x + toAdd.getDeltaX(), y + toAdd.getDeltaY());
     }

@@ -10,14 +10,28 @@ import java.util.EnumMap;
  */
 public class PositionState {
 
-    // The fields below are in the order as described in the FEN standard
-    protected Piece[][] board = new Piece[Chess.BOARD_SIZE][Chess.BOARD_SIZE];
-    protected EnumMap<CastleLocation, Boolean> castlingRights = new EnumMap<>(CastleLocation.class);
-    protected PieceColor colorToMove = Chess.STARTING_PLAYER_COLOR;
-    protected Square enPassantSquare = null;
-    protected int fullMoveCount = Chess.STARTING_FULL_MOVE_COUNT;
-    protected int halfMoveClock = Chess.STARTING_HALF_MOVE_CLOCK;
+    // The fields below are in the order as described in the FEN standard.
+    // See: http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
 
+    // The array representing the position of the pieces on the chess board.
+    protected Piece[][] board = new Piece[Chess.BOARD_SIZE][Chess.BOARD_SIZE];
+    // The array representing which castling moves are still available.
+    protected EnumMap<CastleLocation, Boolean> castlingRights = new EnumMap<>(CastleLocation.class);
+    // The color of the player whose turn it is to move.
+    protected PieceColor colorToMove = Chess.STARTING_PLAYER_COLOR;
+    // The en passant square, if applicable. Set to null if not applicable.
+    protected Square enPassantSquare = null;
+    // The number of half moves since the last pawn move.
+    protected int halfMoveClock = Chess.STARTING_HALF_MOVE_CLOCK;
+    // The number of full moves that have taken place in the game.
+    protected int fullMoveCount = Chess.STARTING_FULL_MOVE_COUNT;
+
+    /**
+     * Constructor. Creates a new Position state with either an empty board or a board set to the
+     * initial starting position.
+     * 
+     * @param addInitialPieces True if the board is to be populated with the pieces in starting position.
+     */
     public PositionState(boolean addInitialPieces) {
         if (addInitialPieces) {
             board = Chess.STARTING_CONFIG;
@@ -35,24 +49,28 @@ public class PositionState {
             castlingRights.put(CastleLocation.WHITE_KING_SIDE, false);
         }
     }
-
-    public PositionState(PositionState position) {
+    
+    /**
+     * Copy Constructor.
+     * @param positionState The PositionState to copy.
+     */
+    public PositionState(PositionState positionState) {
         board = new Piece[Chess.BOARD_SIZE][Chess.BOARD_SIZE];
         for (int i = 0; i < Chess.BOARD_SIZE; i++) {
             for (int j = 0; j < Chess.BOARD_SIZE; j++) {
-                board[i][j] = new Piece(position.board[i][j]);
+                board[i][j] = new Piece(positionState.board[i][j]);
             }
         }
 
-        colorToMove = position.colorToMove;
-        castlingRights = position.castlingRights.clone();
-        if (position.enPassantSquare != null) {
-            enPassantSquare = new Square(position.enPassantSquare);
+        colorToMove = positionState.colorToMove;
+        castlingRights = positionState.castlingRights.clone();
+        if (positionState.enPassantSquare != null) {
+            enPassantSquare = new Square(positionState.enPassantSquare);
         } else {
             enPassantSquare = null;
         }
-        halfMoveClock = position.halfMoveClock;
-        fullMoveCount = position.fullMoveCount;
+        halfMoveClock = positionState.halfMoveClock;
+        fullMoveCount = positionState.fullMoveCount;
     }
 
     public EnumMap<CastleLocation, Boolean> getAbleToCastle() {
@@ -79,11 +97,17 @@ public class PositionState {
         return halfMoveClock;
     }
 
+    /**
+     * Return the piece at the given coordinates.
+     */
     public Piece getPieceAt(int i, int j) {
         assert (0 <= i && i < Chess.BOARD_SIZE && 0 <= j && j < Chess.BOARD_SIZE) : "Invalid board coordinates.";
         return board[i][j];
     }
 
+    /**
+     * Return the piece at the given square.
+     */
     public Piece getPieceAt(Square square) {
         int i = square.getX();
         int j = square.getY();
@@ -119,11 +143,17 @@ public class PositionState {
         this.halfMoveClock = halfMoveCount;
     }
 
+    /**
+     * Change the piece on the board at the given coordinates.
+     */
     public void setPieceAt(int i, int j, Piece piece) {
         assert (0 <= i && i < Chess.BOARD_SIZE && 0 <= j && j < Chess.BOARD_SIZE) : "Invalid board coordinates.";
         board[i][j] = piece;
     }
 
+    /**
+     * Change the piece at the given square.
+     */
     public void setPieceAt(Square square, Piece piece) {
         int i = square.getX();
         int j = square.getY();
