@@ -21,29 +21,29 @@ import net.rexbutler.dtchess.PieceType;
 public class Notation {
 
     // A FEN String has 6 segments separated by spaces
-    static final int FEN_SEGMENTS = 6;
-    static final String FEN_SEGMENT_DELIMITER = " ";
-    static final String ROW_SEPARATOR = "/";
-    static final String ROW_FILLER = "-";
-    static final String NO_CASTLING_MARKER = "-";
-    static final String EN_PASSANT_FILLER = "-";
-    static final String ALL_PIECE_CODES;
-    static final Map<Piece, String> PIECE_CODES = new HashMap<Piece, String>();
+    public static final int FEN_SEGMENTS = 6;
+    public static final String FEN_SEGMENT_DELIMITER = " ";
+    public static final String ROW_SEPARATOR = "/";
+    public static final String ROW_FILLER = "-";
+    public static final String NO_CASTLING_MARKER = "-";
+    public static final String EN_PASSANT_FILLER = "-";
+    public static final String ALL_PIECE_CODES;
 
-    static final Map<PieceType, String> PIECE_TYPE_CODES = new EnumMap<>(PieceType.class);
-    static final Map<String, PieceType> REV_PIECE_TYPE_CODES = new HashMap<>(); // TODO
-
-    static final Map<String, Piece> REV_PIECE_CODES = new HashMap<>();
-    static final String ALL_COLOR_CODES;
-    static final Map<PieceColor, String> COLOR_CODES = new EnumMap<>(PieceColor.class);
-    static final Map<String, PieceColor> REV_COLOR_CODES = new HashMap<>();
-    static final String ALL_CASTLE_CODES;
-    static final Map<CastleLocation, String> CASTLE_CODES = new EnumMap<>(CastleLocation.class);
-    static final Map<String, CastleLocation> REV_CASTLE_CODES = new HashMap<>();
-    static final Map<String, Integer> FILE_TO_X = new HashMap<>();
-    static final Map<Integer, String> X_TO_FILE = new HashMap<>();
-    static final Map<String, Integer> RANK_TO_Y = new HashMap<>();
-    static final Map<Integer, String> Y_TO_RANK = new HashMap<>();
+    // Various maps representing string to object and object to string conversions.
+    public static final Map<Piece, String> PIECE_CODES = new HashMap<Piece, String>();
+    public static final Map<PieceType, String> PIECE_TYPE_CODES = new EnumMap<>(PieceType.class);
+    public static final Map<String, PieceType> REV_PIECE_TYPE_CODES = new HashMap<>(); // TODO
+    public static final Map<String, Piece> REV_PIECE_CODES = new HashMap<>();
+    public static final String ALL_COLOR_CODES;
+    public static final Map<PieceColor, String> COLOR_CODES = new EnumMap<>(PieceColor.class);
+    public static final Map<String, PieceColor> REV_COLOR_CODES = new HashMap<>();
+    public static final String ALL_CASTLE_CODES;
+    public static final Map<CastleLocation, String> CASTLE_CODES = new EnumMap<>(CastleLocation.class);
+    public static final Map<String, CastleLocation> REV_CASTLE_CODES = new HashMap<>();
+    public static final Map<String, Integer> FILE_TO_X = new HashMap<>();
+    public static final Map<Integer, String> X_TO_FILE = new HashMap<>();
+    public static final Map<String, Integer> RANK_TO_Y = new HashMap<>();
+    public static final Map<Integer, String> Y_TO_RANK = new HashMap<>();
 
     static {
         ALL_PIECE_CODES = "-PNBRQKpnbrqk";

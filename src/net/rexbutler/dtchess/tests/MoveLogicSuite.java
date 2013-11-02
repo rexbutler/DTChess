@@ -28,9 +28,13 @@ import au.com.bytecode.opencsv.CSVReader;
 @RunWith(Parameterized.class)
 public class MoveLogicSuite {
 
+    // The chess position to test as a FEN string.
     private final String FEN;
+    // The list of expected legal moves separated by commas.
     private final String legalMoves;
+    // The list of expected illegal moves separated by commas.
     private final String illegalMoves;
+    // The numerical id of the test position.
     private final String id;
 
     public MoveLogicSuite(TestPosition testPosition) {
@@ -40,7 +44,9 @@ public class MoveLogicSuite {
         id = testPosition.getId();
     }
 
-    // Creates the test data
+    /**
+     * Loads an array of TestPosition's from a tab separated value file.
+     */
     @Parameters
     public static Collection<TestPosition[]> data() throws IOException {
         final String dataFileName = "./DTChessTests.tsv";
@@ -85,8 +91,11 @@ public class MoveLogicSuite {
         }
     }
 
+    /**
+     * The main test.
+     */
     @Test
-    public void testIsLegalMove() {
+    public void testMoveLegality() {
         Position position; // = NotationIn.positionFromFEN(FEN);
         final String[] legalMoveNotations = splitMoves(legalMoves);
         final String[] illegalMoveNotations = splitMoves(illegalMoves);

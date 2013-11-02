@@ -1,7 +1,7 @@
 package net.rexbutler.dtchess.tests;
 
 /**
- * A data class representing one compound test of move validation. Each test consisting of a test
+ * A data class representing one compound test of move validation. Each test consists of a test
  * id, one chess position (as a FEN string), and the expected legal and illegal moves given that position.
  * 
  * @author Rex Butler

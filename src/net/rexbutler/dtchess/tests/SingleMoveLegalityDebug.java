@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * A test class to test move validation on a specific move. Used for debugging once a problem has
+ * A test class for move validation of a specific move. Used for debugging once a problem has
  * been located.
  * 
  * @author Rex Butler

@@ -18,12 +18,15 @@ import net.rexbutler.dtchess.Position;
 import net.rexbutler.dtchess.Square;
 
 /**
- * A class for converting various chess notations to into internal object representations.
+ * A class for converting various chess notations into internal object representations.
  * 
  * @author Rex Butler
  */
 public class NotationIn {
 
+    /**
+     * Convert a FEN chess string into a Position object.
+     */
     public static Position positionFromFEN(String FEN) {
         final String FENParts[] = FEN.split(Notation.FEN_SEGMENT_DELIMITER);
 
@@ -49,6 +52,9 @@ public class NotationIn {
         return position;
     }
 
+    /**
+     * Convert the board configuration portion of a FEN string into the corresponding array of pieces.
+     */
     public static Piece[][] boardConfigFromFEN(String FENConfig) {
         final Piece[][] config = new Piece[Chess.BOARD_SIZE][Chess.BOARD_SIZE];
         final Piece[][] tempConfig = new Piece[Chess.BOARD_SIZE][Chess.BOARD_SIZE];
@@ -72,6 +78,9 @@ public class NotationIn {
         return config;
     }
 
+    /**
+     * Convert one row of the FEN board configuration string into an array of Pieces.
+     */
     private static Piece[] rowFromRowStr(String FENRow) {
         final Piece pieceRow[] = new Piece[Chess.BOARD_SIZE];
         String pieceCode;
