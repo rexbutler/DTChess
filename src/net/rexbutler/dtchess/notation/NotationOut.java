@@ -4,6 +4,8 @@
  */
 package net.rexbutler.dtchess.notation;
 
+import com.google.common.base.Optional;
+
 import net.rexbutler.dtchess.CastleLocation;
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
@@ -23,23 +25,23 @@ public class NotationOut {
     public static String notationOf(PositionState position, Move move) {
         final Piece piece = position.getPieceAt(move.getStartSquare());
         String notation = "";
-
         notation += Notation.PIECE_TYPE_CODES.get(piece.getType());
-        notation += notationOf(move.getStartSquare());
-        notation += notationOf(move.getEndSquare());
+        notation += notationOf(Optional.of(move.getStartSquare()));
+        notation += notationOf(Optional.of(move.getEndSquare()));
 
         return notation;
     }
 
-    public static String notationOf(Square square) {
-        if (square == null) {
-            return Notation.EN_PASSANT_FILLER;
+    public static String notationOf(Optional<Square> optSquare) {
+        String notation;
+        if (optSquare.isPresent()) {
+            Square square = optSquare.get();
+            notation = "";
+            notation += Notation.X_TO_FILE.get(square.getX());
+            notation += Notation.Y_TO_RANK.get(square.getY());
+        } else {
+            notation =  Notation.EN_PASSANT_FILLER;
         }
-
-        String notation = "";
-        notation += Notation.X_TO_FILE.get(square.getX());
-        notation += Notation.Y_TO_RANK.get(square.getY());
-
         return notation;
     }
 

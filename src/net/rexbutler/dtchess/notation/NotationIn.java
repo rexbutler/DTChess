@@ -8,6 +8,8 @@ import java.util.EnumMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Optional;
+
 import net.rexbutler.dtchess.CastleLocation;
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
@@ -37,7 +39,7 @@ public class NotationIn {
         final Piece[][] boardConfig = boardConfigFromFEN(FENParts[0]);
         final PieceColor pieceColorToMove = playerToMoveFromFEN(FENParts[1]);
         final EnumMap<CastleLocation, Boolean> ableToCastle = castleRightsFromFEN(FENParts[2]);
-        final Square enPassantSquare = enPassantSquareFromFEN(FENParts[3]);
+        final Optional<Square> enPassantSquare = enPassantSquareFromFEN(FENParts[3]);
         final int halfMoveClock = halfMoveClockFromFEN(FENParts[4]);
         final int fullMoveCount = fullMoveCountFromFEN(FENParts[5]);
 
@@ -169,16 +171,16 @@ public class NotationIn {
         return castleRights;
     }
 
-    public static Square enPassantSquareFromFEN(String enPassantSquare) {
+    public static Optional<Square> enPassantSquareFromFEN(String enPassantSquare) {
         // Error if enPassantSquare is not two characters long
         if (enPassantSquare.length() != 2) {
-            return null;
+            return Optional.absent();
         }
-
+        
         final int x = Notation.FILE_TO_X.get(enPassantSquare.substring(0, 1));
         final int y = Notation.RANK_TO_Y.get(enPassantSquare.substring(1, 2));
-
-        return new Square(x, y);
+        Square ePSquare = new Square(x, y);
+        return Optional.of(ePSquare);
     }
 
     public static Integer halfMoveClockFromFEN(String halfMoveClockStr) {

@@ -2,6 +2,8 @@ package net.rexbutler.dtchess.movelogic;
 
 import java.util.HashSet;
 
+import com.google.common.base.Optional;
+
 import net.rexbutler.dtchess.Chess;
 import net.rexbutler.dtchess.Move;
 import net.rexbutler.dtchess.MoveVector;
@@ -51,7 +53,7 @@ public class PawnEnPassantLogic implements PieceLogic{
         final int ady = Math.abs(dy);
 
         final Piece pawnToMove = position.getPieceAt(move.getStartSquare());
-        final Square enPassantSquare = position.getEnPassantSquare();
+        final Optional<Square> enPassantSquare = position.getEnPassantSquare();
 
         if (!position.isMovablePieceAtSquare(move.getStartSquare())) {
             return false;
@@ -82,11 +84,13 @@ public class PawnEnPassantLogic implements PieceLogic{
             return false;
         }
 
-        if (enPassantSquare == null) {
+        if (!enPassantSquare.isPresent()) {
             return false;
-        }
-        if (enPassantSquare.getX() != x2 || enPassantSquare.getY() != y2) {
-            return false;
+        } else {
+            Square ePSquare = enPassantSquare.get();
+            if (ePSquare.getX() != x2 || ePSquare.getY() != y2) {
+                return false;
+            }
         }
         return true;
     }

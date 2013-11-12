@@ -2,6 +2,8 @@ package net.rexbutler.dtchess;
 
 import java.util.EnumMap;
 
+import com.google.common.base.Optional;
+
 /**
  * Represents the complete state of a chess position --- except for three-fold draw by repetition
  * info which requires a complete game log, see the Game class.
@@ -20,7 +22,7 @@ public class PositionState {
     // The color of the player whose turn it is to move.
     protected PieceColor colorToMove = Chess.STARTING_PLAYER_COLOR;
     // The en passant square, if applicable. Set to null if not applicable.
-    protected Square enPassantSquare = null;
+    protected Optional<Square> enPassantSquare = null;
     // The number of half moves since the last pawn move.
     protected int halfMoveClock = Chess.STARTING_HALF_MOVE_CLOCK;
     // The number of full moves that have taken place in the game.
@@ -64,11 +66,7 @@ public class PositionState {
 
         colorToMove = positionState.colorToMove;
         castlingRights = positionState.castlingRights.clone();
-        if (positionState.enPassantSquare != null) {
-            enPassantSquare = new Square(positionState.enPassantSquare);
-        } else {
-            enPassantSquare = null;
-        }
+        enPassantSquare = positionState.enPassantSquare;
         halfMoveClock = positionState.halfMoveClock;
         fullMoveCount = positionState.fullMoveCount;
     }
@@ -85,7 +83,7 @@ public class PositionState {
         return colorToMove;
     }
 
-    public Square getEnPassantSquare() {
+    public Optional<Square> getEnPassantSquare() {
         return enPassantSquare;
     }
 
@@ -131,7 +129,7 @@ public class PositionState {
         this.colorToMove = playerToMove;
     }
 
-    public void setEnPassantSquare(Square enPassantSquare) {
+    public void setEnPassantSquare(Optional<Square> enPassantSquare) {
         this.enPassantSquare = enPassantSquare;
     }
 
