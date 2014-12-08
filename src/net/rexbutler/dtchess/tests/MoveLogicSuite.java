@@ -1,7 +1,5 @@
 package net.rexbutler.dtchess.tests;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,6 +17,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import au.com.bytecode.opencsv.CSVReader;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A suite to test move validation (legality and non-legality of various moves).
